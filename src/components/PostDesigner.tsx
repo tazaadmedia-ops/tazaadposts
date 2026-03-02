@@ -50,14 +50,9 @@ const PostContent = ({
             <>
                 {parts.map((part: string, i: number) =>
                     part.toLowerCase() === highlightText.toLowerCase() ? (
-                        <span key={i} style={{
-                            color: highlightColor,
-                            fontWeight: 800,
-                            display: 'inline',
-                            unicodeBidi: 'isolate'
-                        }}>{part}</span>
+                        <span key={i} style={{ color: highlightColor, fontWeight: 800 }}>{part}</span>
                     ) : (
-                        <span key={i} style={{ display: 'inline', unicodeBidi: 'isolate' }}>{part}</span>
+                        <span key={i}>{part}</span>
                     )
                 )}
             </>
@@ -156,16 +151,14 @@ const PostContent = ({
                                 fontFamily: 'var(--font-sindhi)',
                                 marginBottom: '8px',
                                 display: 'inline-block',
-                                lineHeight: 1.2,     // Better vertical balance for Sindhi characters
+                                lineHeight: 1.2,
                                 textRendering: 'optimizeLegibility',
                                 WebkitFontSmoothing: 'antialiased',
-                                fontFeatureSettings: '"kern" 1, "liga" 1, "clig" 1, "calt" 1, "palt" 1',
+                                fontFeatureSettings: '"kern" 1, "liga" 1, "clig" 1, "calt" 1',
                                 fontVariantLigatures: 'contextual',
-                                letterSpacing: `${letterSpacing}em`,
+                                letterSpacing: 'normal', // Forced normal to preserve ligatures
                                 wordSpacing: 'normal',
-                                whiteSpace: 'nowrap',
-                                unicodeBidi: 'isolate',
-                                transform: 'translateZ(0)'
+                                whiteSpace: 'nowrap'
                             }}
                         >
                             بريڪنگ نيوز
@@ -180,16 +173,15 @@ const PostContent = ({
                             lineHeight: lineHeight,
                             textAlign: textAlign,
                             fontWeight: fontWeight,
-                            letterSpacing: `${letterSpacing}em`,
+                            letterSpacing: 'normal', // Forced normal to preserve ligatures
                             width: '100%',
                             textRendering: 'optimizeLegibility',
                             WebkitFontSmoothing: 'antialiased',
-                            fontFeatureSettings: '"kern" 1, "liga" 1, "clig" 1, "calt" 1, "palt" 1',
+                            fontFeatureSettings: '"kern" 1, "liga" 1, "clig" 1, "calt" 1',
                             fontVariantLigatures: 'contextual',
                             wordSpacing: 'normal',
                             whiteSpace: 'pre-wrap',
-                            wordBreak: 'break-word',
-                            transform: 'translateZ(0)'
+                            wordBreak: 'break-word'
                         }}
                     >
                         {renderText()}
