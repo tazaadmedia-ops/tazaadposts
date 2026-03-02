@@ -400,7 +400,7 @@ export default function PostDesigner() {
                 <aside style={{
                     width: isMobile ? '100%' : '340px',
                     height: isMobile ? '45%' : 'auto',
-                    flexShrink: 0,
+                    flex: isMobile ? '0 0 45%' : 'none',
                     backgroundColor: 'var(--bg-panel)',
                     borderRight: isMobile ? 'none' : '1px solid var(--border-subtle)',
                     borderTop: isMobile ? '1px solid var(--border-subtle)' : 'none',
@@ -414,6 +414,7 @@ export default function PostDesigner() {
                     {isMobile && (
                         <div style={{
                             display: 'flex',
+                            flexShrink: 0,
                             overflowX: 'auto',
                             borderBottom: '1px solid var(--border-subtle)',
                             backgroundColor: 'rgba(255,255,255,0.02)',
@@ -789,7 +790,7 @@ export default function PostDesigner() {
 
                 {/* Live Preview Area - On top in mobile */}
                 <main ref={containerRef} style={{
-                    flex: 1,
+                    flex: isMobile ? '1 1 auto' : '1',
                     minHeight: 0,
                     height: 'auto',
                     position: 'relative',
