@@ -575,11 +575,11 @@ export default function PostDesigner() {
                             <div style={{ position: 'relative' }}>
                                 <textarea
                                     value={text}
-                                    onChange={e => setText(e.target.value.slice(0, 100))}
+                                    onChange={e => setText(e.target.value.slice(0, 150))}
                                     dir="rtl"
                                     placeholder="توهان جي لکڻ هتي..."
                                     className="lateef-bold"
-                                    maxLength={100}
+                                    maxLength={150}
                                     style={{
                                         width: '100%',
                                         height: '140px',
@@ -599,12 +599,12 @@ export default function PostDesigner() {
                                     left: '16px',
                                     fontSize: '10px',
                                     fontWeight: 700,
-                                    color: text.length >= 100 ? 'var(--accent-red)' : 'var(--text-muted)',
+                                    color: text.length >= 150 ? 'var(--accent-red)' : 'var(--text-muted)',
                                     backgroundColor: 'rgba(0,0,0,0.3)',
                                     padding: '2px 8px',
                                     borderRadius: '4px'
                                 }}>
-                                    {text.length}/100
+                                    {text.length}/150
                                 </div>
                             </div>
 
@@ -633,11 +633,11 @@ export default function PostDesigner() {
                             <div style={{ position: 'relative' }}>
                                 <textarea
                                     value={subtitle}
-                                    onChange={e => setSubtitle(e.target.value.slice(0, 100))}
+                                    onChange={e => setSubtitle(e.target.value.slice(0, 150))}
                                     dir="rtl"
                                     placeholder="ذيلي عنوان (Subtitle)..."
                                     className="lateef-bold"
-                                    maxLength={100}
+                                    maxLength={150}
                                     style={{
                                         width: '100%',
                                         height: '80px',
@@ -662,7 +662,7 @@ export default function PostDesigner() {
                                     padding: '1px 6px',
                                     borderRadius: '4px'
                                 }}>
-                                    {subtitle.length}/100
+                                    {subtitle.length}/150
                                 </div>
                             </div>
                         </section>
