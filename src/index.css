@@ -38,6 +38,16 @@
     box-sizing: border-box;
 }
 
+html,
+body,
+#root,
+.app {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
 body {
     font-family: var(--font-sans);
     background-color: var(--bg-main);
@@ -45,9 +55,6 @@ body {
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-osx-font-smoothing: grayscale;
-    /* Allow scrolling on mobile devices */
-    overflow-x: hidden;
-    overflow-y: auto;
 }
 
 /* Custom Scrollbar */

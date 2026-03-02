@@ -288,7 +288,7 @@ export default function PostDesigner() {
         if (containerRef.current) observer.observe(containerRef.current);
         handleResize();
         return () => observer.disconnect();
-    }, []);
+    }, [isMobile]);
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -332,10 +332,11 @@ export default function PostDesigner() {
     };
 
     return (
-        <div className="designer-wrapper" style={{ height: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--bg-main)', overflow: 'hidden' }}>
+        <div className="designer-wrapper" style={{ height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--bg-main)', overflow: 'hidden' }}>
             {/* Top Header */}
             <header style={{
                 height: isMobile ? '56px' : '60px',
+                flexShrink: 0,
                 borderBottom: '1px solid var(--border-subtle)',
                 display: 'flex',
                 alignItems: 'center',
@@ -388,6 +389,7 @@ export default function PostDesigner() {
 
             <div style={{
                 flex: 1,
+                minHeight: 0,
                 display: 'flex',
                 flexDirection: isMobile ? 'column' : 'row',
                 height: isMobile ? 'calc(100% - 56px)' : 'calc(100vh - 60px)',
@@ -397,14 +399,15 @@ export default function PostDesigner() {
                 {/* Sidebar Controls - Bottom on mobile */}
                 <aside style={{
                     width: isMobile ? '100%' : '340px',
-                    height: isMobile ? '350px' : 'auto',
+                    height: isMobile ? '45%' : 'auto',
+                    flexShrink: 0,
                     backgroundColor: 'var(--bg-panel)',
                     borderRight: isMobile ? 'none' : '1px solid var(--border-subtle)',
                     borderTop: isMobile ? '1px solid var(--border-subtle)' : 'none',
                     display: 'flex',
                     flexDirection: 'column',
                     zIndex: 50,
-                    overflowY: 'auto',
+                    overflowY: isMobile ? 'hidden' : 'auto',
                     order: isMobile ? 2 : 1
                 }}>
                     {/* Mobile Tab Navigation */}
@@ -446,7 +449,7 @@ export default function PostDesigner() {
                         </div>
                     )}
 
-                    <div style={{ flex: 1, overflowY: isMobile ? 'visible' : 'auto', padding: isMobile ? '20px' : '24px', display: 'flex', flexDirection: 'column', gap: '32px' }}>
+                    <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', padding: isMobile ? '20px' : '24px', display: 'flex', flexDirection: 'column', gap: '32px' }}>
 
                         {(!isMobile || activeTab === 'visuals') && (
                             <section style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -758,7 +761,7 @@ export default function PostDesigner() {
                         )}
                     </div>
 
-                    <div style={{ padding: '24px', borderTop: '1px solid var(--border-subtle)' }}>
+                    <div style={{ padding: '24px', borderTop: '1px solid var(--border-subtle)', flexShrink: 0 }}>
                         <button
                             onClick={handleDownload}
                             disabled={isExporting || !text}
@@ -786,13 +789,14 @@ export default function PostDesigner() {
 
                 {/* Live Preview Area - On top in mobile */}
                 <main ref={containerRef} style={{
-                    flex: isMobile ? 'none' : 1,
-                    height: isMobile ? '400px' : 'auto',
+                    flex: 1,
+                    minHeight: 0,
+                    height: 'auto',
                     position: 'relative',
                     zIndex: 40,
                     display: 'grid',
                     placeItems: 'center',
-                    padding: isMobile ? '16px' : '40px',
+                    padding: isMobile ? '12px' : '40px',
                     backgroundColor: 'var(--bg-main)',
                     overflow: 'hidden',
                     order: isMobile ? 1 : 2,
