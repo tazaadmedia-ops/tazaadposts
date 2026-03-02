@@ -148,18 +148,15 @@ const PostContent = ({
                         display: 'flex',
                         flexDirection: 'column',
                         padding: '60px 80px',
+                        paddingBottom: `${((100 - textY) / 100) * 200 + 40}px`,
                         alignItems: textAlign === 'left' ? 'flex-start' : textAlign === 'right' ? 'flex-end' : 'center',
-                        justifyContent: textY < 30 ? 'flex-start' : textY > 70 ? 'flex-end' : 'center',
-                        paddingTop: textY < 30 ? '40px' : 'auto',
-                        paddingBottom: textY > 70 ? '40px' : 'auto'
+                        justifyContent: 'flex-end'
                     }}>
                         <div style={{
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: textAlign === 'left' ? 'flex-start' : textAlign === 'right' ? 'flex-end' : 'center',
-                            width: '100%',
-                            marginTop: textY === 50 ? '0' : textY < 50 ? '0' : 'auto',
-                            marginBottom: textY === 50 ? '0' : textY > 50 ? '0' : 'auto'
+                            width: '100%'
                         }}>
                             {showBreakingNews && (
                                 <div
@@ -264,19 +261,16 @@ const PostContent = ({
                             display: 'flex',
                             flexDirection: 'column',
                             padding: '80px',
+                            paddingBottom: `${((100 - textY) / 100) * (POST_HEIGHT - 300) + 80}px`,
                             alignItems: textAlign === 'left' ? 'flex-start' : textAlign === 'right' ? 'flex-end' : 'center',
-                            justifyContent: textY < 30 ? 'flex-start' : textY > 70 ? 'flex-end' : 'center',
-                            paddingTop: textY < 30 ? '80px' : 'auto',
-                            paddingBottom: textY > 70 ? '80px' : 'auto'
+                            justifyContent: 'flex-end'
                         }}
                     >
                         <div style={{
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: textAlign === 'left' ? 'flex-start' : textAlign === 'right' ? 'flex-end' : 'center',
-                            width: '100%',
-                            marginTop: textY === 50 ? '0' : textY < 50 ? '0' : 'auto',
-                            marginBottom: textY === 50 ? '0' : textY > 50 ? '0' : 'auto'
+                            width: '100%'
                         }}>
                             {showBreakingNews && (
                                 <div
@@ -405,9 +399,6 @@ const PostContent = ({
                         display: 'flex',
                         flexDirection: 'column',
                         padding: '60px 80px',
-                        justifyContent: textY < 30 ? 'flex-start' : textY > 70 ? 'flex-end' : 'center',
-                        paddingTop: textY < 30 ? '40px' : 'auto',
-                        paddingBottom: textY > 70 ? '40px' : 'auto'
                     }}>
                         {/* Quote Mark Icon */}
                         <div style={{
@@ -424,17 +415,16 @@ const PostContent = ({
                             />
                         </div>
 
-                        {/* Centered Text */}
+                        {/* Centered Text smoothly positioned via textY */}
                         <div style={{
                             flex: 1,
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
-                            justifyContent: 'center',
+                            justifyContent: 'flex-end',
                             width: '100%',
                             zIndex: 10,
-                            marginTop: textY === 50 ? '0' : textY < 50 ? '0' : 'auto',
-                            marginBottom: textY === 50 ? '0' : textY > 50 ? '0' : 'auto'
+                            paddingBottom: `${((100 - textY) / 100) * 300}px`
                         }}>
                             <div
                                 dir="rtl"
