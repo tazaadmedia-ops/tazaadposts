@@ -41,7 +41,8 @@ const PostContent = ({
     fontWeight,
     letterSpacing,
     subtitle,
-    subtitleFontSize
+    subtitleFontSize,
+    layoutMode
 }: any) => {
     const renderText = () => {
         if (!highlightText.trim() || !text.includes(highlightText)) {
@@ -79,143 +80,245 @@ const PostContent = ({
                 textSizeAdjust: 'none' as any
             }}
         >
-            {/* Background Image */}
-            {imageUrl && (
-                <div
-                    style={{
-                        position: 'absolute',
-                        inset: 0,
-                        zIndex: 0,
-                        backgroundImage: `url(${imageUrl})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        backgroundRepeat: 'no-repeat'
-                    }}
-                />
-            )}
-
-            {/* Brand Identity Layer */}
-            <div style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                padding: '55px',
-                zIndex: 20,
-                display: 'flex',
-                justifyContent: 'flex-start'
-            }}>
-                <img
-                    src={logoUrl}
-                    alt="Tazaad"
-                    style={{
-                        height: `${logoSize}px`,
-                        width: 'auto',
-                        objectFit: 'contain',
-                        display: 'block'
-                    }}
-                    crossOrigin="anonymous"
-                />
-            </div>
-
-            {/* Narrative Layer */}
-            <div
-                style={{
-                    position: 'absolute',
-                    inset: 0,
-                    zIndex: 10,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    padding: '80px',
-                    alignItems: textAlign === 'left' ? 'flex-start' : textAlign === 'right' ? 'flex-end' : 'center',
-                    justifyContent: 'flex-end',
-                    paddingBottom: `${((100 - textY) / 100) * (POST_HEIGHT - 160) + bottomBarHeight + 40}px`,
-                    background: `linear-gradient(to bottom, 
-                            rgba(0,0,0,0) 0%, 
-                            rgba(0,0,0,0) ${100 - gradientCoverage}%, 
-                            rgba(0,0,0,${0.9 * (gradientCoverage / 100)}) ${Math.max(0, 100 - gradientCoverage * 0.4)}%, 
-                            rgba(0,0,0,1.0) 100%)`
-                }}
-            >
-                <div style={{
-                    marginTop: textY === 50 ? '0' : textY < 50 ? '0' : 'auto',
-                    marginBottom: textY === 50 ? '0' : textY > 50 ? '0' : 'auto',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: textAlign === 'left' ? 'flex-start' : textAlign === 'right' ? 'flex-end' : 'center',
-                    width: '100%'
-                }}>
-                    {showBreakingNews && (
+            {layoutMode === 'split' ? (
+                // Split Layout Mode
+                <>
+                    {/* Top Image Section (approx 65%) */}
+                    {imageUrl && (
                         <div
-                            dir="rtl"
                             style={{
-                                backgroundColor: 'var(--accent-red)',
-                                color: 'white',
-                                padding: '16px 28px 20px 28px', // Significantly increased for bolder, spacious look
-                                borderRadius: '2px',
-                                fontSize: `${fontSize * 0.75}px`,
-                                fontWeight: 800,
-                                fontFamily: 'var(--font-sindhi)',
-                                marginBottom: '14px', // Increased space between label and title
-                                display: 'inline-block',
-                                lineHeight: 1,
-                                textRendering: 'optimizeLegibility',
-                                WebkitFontSmoothing: 'antialiased',
-                                fontFeatureSettings: '"kern" 1, "liga" 1, "clig" 1, "calt" 1',
-                                fontVariantLigatures: 'contextual',
-                                letterSpacing: '0',
-                                wordSpacing: 'normal',
-                                whiteSpace: 'nowrap'
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                width: '100%',
+                                height: '60%',
+                                zIndex: 0,
+                                backgroundImage: `url(${imageUrl})`,
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'center',
+                                backgroundRepeat: 'no-repeat'
                             }}
-                        >
-                            بريڪنگ نيوز
-                        </div>
+                        />
                     )}
+                    {/* Red Separator */}
+                    <div style={{
+                        position: 'absolute',
+                        top: '60%',
+                        left: 0,
+                        width: '100%',
+                        height: '14px',
+                        backgroundColor: 'var(--accent-red)',
+                        zIndex: 10
+                    }} />
+                    {/* Bottom Black Section */}
+                    <div style={{
+                        position: 'absolute',
+                        top: 'calc(60% + 14px)',
+                        left: 0,
+                        width: '100%',
+                        bottom: bottomBarHeight,
+                        backgroundColor: '#000000',
+                        zIndex: 5,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        padding: '60px 80px',
+                        alignItems: textAlign === 'left' ? 'flex-start' : textAlign === 'right' ? 'flex-end' : 'center',
+                        justifyContent: textY < 30 ? 'flex-start' : textY > 70 ? 'flex-end' : 'center'
+                    }}>
+                        <div style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: textAlign === 'left' ? 'flex-start' : textAlign === 'right' ? 'flex-end' : 'center',
+                            width: '100%'
+                        }}>
+                            {showBreakingNews && (
+                                <div
+                                    dir="rtl"
+                                    style={{
+                                        backgroundColor: 'var(--accent-red)',
+                                        color: 'white',
+                                        padding: '16px 28px 20px 28px',
+                                        borderRadius: '2px',
+                                        fontSize: `${fontSize * 0.75}px`,
+                                        fontWeight: 800,
+                                        fontFamily: 'var(--font-sindhi)',
+                                        marginBottom: '30px',
+                                        display: 'inline-block',
+                                        lineHeight: 1,
+                                        textRendering: 'optimizeLegibility',
+                                        WebkitFontSmoothing: 'antialiased',
+                                        fontFeatureSettings: '"kern" 1, "liga" 1, "clig" 1, "calt" 1',
+                                        fontVariantLigatures: 'contextual',
+                                        letterSpacing: '0',
+                                        whiteSpace: 'nowrap'
+                                    }}
+                                >
+                                    بريڪنگ نيوز
+                                </div>
+                            )}
+                            <div
+                                dir="rtl"
+                                className="lateef-bold"
+                                style={{
+                                    color: 'white',
+                                    fontSize: `${fontSize}px`,
+                                    lineHeight: lineHeight,
+                                    textAlign: textAlign,
+                                    fontWeight: fontWeight,
+                                    letterSpacing: '0',
+                                    width: '100%',
+                                    textRendering: 'optimizeLegibility',
+                                    WebkitFontSmoothing: 'antialiased',
+                                    wordSpacing: 'normal',
+                                    whiteSpace: 'pre-wrap',
+                                    wordBreak: 'break-word',
+                                    fontFeatureSettings: '"kern" 1, "liga" 1, "clig" 1, "calt" 1',
+                                    fontVariantLigatures: 'contextual'
+                                }}
+                            >
+                                {renderText()}
+                            </div>
+                            {subtitle && (
+                                <div
+                                    dir="rtl"
+                                    className="lateef-bold"
+                                    style={{
+                                        color: 'rgba(255,255,255,0.95)',
+                                        fontSize: `${subtitleFontSize}px`,
+                                        lineHeight: 1.2,
+                                        textAlign: textAlign,
+                                        fontWeight: 500,
+                                        letterSpacing: '0',
+                                        width: '100%',
+                                        marginTop: '10px',
+                                        textRendering: 'optimizeLegibility',
+                                        WebkitFontSmoothing: 'antialiased'
+                                    }}
+                                >
+                                    {subtitle}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </>
+            ) : (
+                // Overlay Layout Mode
+                <>
+                    {/* Background Image */}
+                    {imageUrl && (
+                        <div
+                            style={{
+                                position: 'absolute',
+                                inset: 0,
+                                zIndex: 0,
+                                backgroundImage: `url(${imageUrl})`,
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'center',
+                                backgroundRepeat: 'no-repeat'
+                            }}
+                        />
+                    )}
+
+                    {/* Narrative Layer */}
                     <div
-                        dir="rtl"
-                        className="lateef-bold"
                         style={{
-                            color: 'white',
-                            fontSize: `${fontSize}px`,
-                            lineHeight: lineHeight,
-                            textAlign: textAlign,
-                            fontWeight: fontWeight,
-                            letterSpacing: '0',
-                            width: '100%',
-                            textRendering: 'optimizeLegibility',
-                            WebkitFontSmoothing: 'antialiased',
-                            fontFeatureSettings: '"kern" 1, "liga" 1, "clig" 1, "calt" 1',
-                            fontVariantLigatures: 'contextual',
-                            wordSpacing: 'normal',
-                            whiteSpace: 'pre-wrap',
-                            wordBreak: 'break-word'
+                            position: 'absolute',
+                            inset: 0,
+                            zIndex: 10,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            padding: '80px',
+                            alignItems: textAlign === 'left' ? 'flex-start' : textAlign === 'right' ? 'flex-end' : 'center',
+                            justifyContent: 'flex-end',
+                            paddingBottom: `${((100 - textY) / 100) * (POST_HEIGHT - 160) + bottomBarHeight + 40}px`,
+                            background: `linear-gradient(to bottom, 
+                                    rgba(0,0,0,0) 0%, 
+                                    rgba(0,0,0,0) ${100 - gradientCoverage}%, 
+                                    rgba(0,0,0,${0.9 * (gradientCoverage / 100)}) ${Math.max(0, 100 - gradientCoverage * 0.4)}%, 
+                                    rgba(0,0,0,1.0) 100%)`
                         }}
                     >
-                        {renderText()}
-                    </div>
-                    {subtitle && (
-                        <div
-                            dir="rtl"
-                            className="lateef-bold"
-                            style={{
-                                color: 'rgba(255,255,255,0.95)',
-                                fontSize: `${subtitleFontSize}px`,
-                                lineHeight: 1.2,
-                                textAlign: textAlign,
-                                fontWeight: 500,
-                                letterSpacing: '0',
-                                width: '100%',
-                                marginTop: '10px',
-                                textRendering: 'optimizeLegibility',
-                                WebkitFontSmoothing: 'antialiased',
-                                opacity: 0.9
-                            }}
-                        >
-                            {subtitle}
+                        <div style={{
+                            marginTop: textY === 50 ? '0' : textY < 50 ? '0' : 'auto',
+                            marginBottom: textY === 50 ? '0' : textY > 50 ? '0' : 'auto',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: textAlign === 'left' ? 'flex-start' : textAlign === 'right' ? 'flex-end' : 'center',
+                            width: '100%'
+                        }}>
+                            {showBreakingNews && (
+                                <div
+                                    dir="rtl"
+                                    style={{
+                                        backgroundColor: 'var(--accent-red)',
+                                        color: 'white',
+                                        padding: '16px 28px 20px 28px', // Significantly increased for bolder, spacious look
+                                        borderRadius: '2px',
+                                        fontSize: `${fontSize * 0.75}px`,
+                                        fontWeight: 800,
+                                        fontFamily: 'var(--font-sindhi)',
+                                        marginBottom: '14px', // Increased space between label and title
+                                        display: 'inline-block',
+                                        lineHeight: 1,
+                                        textRendering: 'optimizeLegibility',
+                                        WebkitFontSmoothing: 'antialiased',
+                                        fontFeatureSettings: '"kern" 1, "liga" 1, "clig" 1, "calt" 1',
+                                        fontVariantLigatures: 'contextual',
+                                        letterSpacing: '0',
+                                        wordSpacing: 'normal',
+                                        whiteSpace: 'nowrap'
+                                    }}
+                                >
+                                    بريڪنگ نيوز
+                                </div>
+                            )}
+                            <div
+                                dir="rtl"
+                                className="lateef-bold"
+                                style={{
+                                    color: 'white',
+                                    fontSize: `${fontSize}px`,
+                                    lineHeight: lineHeight,
+                                    textAlign: textAlign,
+                                    fontWeight: fontWeight,
+                                    letterSpacing: '0',
+                                    width: '100%',
+                                    textRendering: 'optimizeLegibility',
+                                    WebkitFontSmoothing: 'antialiased',
+                                    fontFeatureSettings: '"kern" 1, "liga" 1, "clig" 1, "calt" 1',
+                                    fontVariantLigatures: 'contextual',
+                                    wordSpacing: 'normal',
+                                    whiteSpace: 'pre-wrap',
+                                    wordBreak: 'break-word'
+                                }}
+                            >
+                                {renderText()}
+                            </div>
+                            {subtitle && (
+                                <div
+                                    dir="rtl"
+                                    className="lateef-bold"
+                                    style={{
+                                        color: 'rgba(255,255,255,0.95)',
+                                        fontSize: `${subtitleFontSize}px`,
+                                        lineHeight: 1.2,
+                                        textAlign: textAlign,
+                                        fontWeight: 500,
+                                        letterSpacing: '0',
+                                        width: '100%',
+                                        marginTop: '10px',
+                                        textRendering: 'optimizeLegibility',
+                                        WebkitFontSmoothing: 'antialiased',
+                                        opacity: 0.9
+                                    }}
+                                >
+                                    {subtitle}
+                                </div>
+                            )}
                         </div>
-                    )}
-                </div>
-            </div>
+                    </div>
+                </>
+            )}
 
             {/* Bottom Identity Bar */}
             <div
@@ -224,9 +327,9 @@ const PostContent = ({
                     bottom: 0,
                     left: 0,
                     right: 0,
-                    backgroundColor: 'var(--accent-red)',
+                    backgroundColor: layoutMode === 'split' ? 'transparent' : 'var(--accent-red)',
                     zIndex: 30,
-                    height: `${bottomBarHeight}px`
+                    height: layoutMode === 'split' ? 0 : `${bottomBarHeight}px`
                 }}
             />
         </div>
@@ -248,6 +351,7 @@ export default function PostDesigner() {
     const [textY, setTextY] = useState(85);
     const [textAlign, setTextAlign] = useState<'left' | 'center' | 'right'>('center');
     const [gradientCoverage, setGradientCoverage] = useState(85);
+    const [layoutMode, setLayoutMode] = useState<'overlay' | 'split'>('overlay');
     const [logoSize, setLogoSize] = useState(80);
     const [bottomBarHeight, setBottomBarHeight] = useState(18);
     const [showBreakingNews, setShowBreakingNews] = useState(false);
@@ -671,6 +775,15 @@ export default function PostDesigner() {
                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                 <span style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--text-muted)' }}>Adjustments</span>
                                 <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--border-subtle)' }} />
+                            </div>
+
+                            {/* Layout Mode */}
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Canvas Style</label>
+                                <div style={{ display: 'flex', gap: '4px', padding: '4px', backgroundColor: 'var(--bg-card)', borderRadius: '12px' }}>
+                                    <button onClick={() => setLayoutMode('overlay')} style={{ flex: 1, padding: '8px', borderRadius: '8px', backgroundColor: layoutMode === 'overlay' ? 'var(--accent-red)' : 'transparent', color: 'white', fontSize: '11px', fontWeight: 700 }}>Overlay</button>
+                                    <button onClick={() => setLayoutMode('split')} style={{ flex: 1, padding: '8px', borderRadius: '8px', backgroundColor: layoutMode === 'split' ? 'var(--accent-red)' : 'transparent', color: 'white', fontSize: '11px', fontWeight: 700 }}>Split</button>
+                                </div>
                             </div>
 
                             {/* Text Size */}
