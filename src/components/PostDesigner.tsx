@@ -225,6 +225,252 @@ const PostContent = ({
                         </div>
                     </div>
                 </>
+            ) : layoutMode === 'solid' ? (
+                // Solid Black Layout Mode
+                <>
+                    <div style={{ position: 'absolute', inset: 0, backgroundColor: '#000000', zIndex: 0 }} />
+
+                    {/* Logo at Bottom Left */}
+                    <div style={{
+                        position: 'absolute',
+                        bottom: '55px',
+                        left: '55px',
+                        zIndex: 20
+                    }}>
+                        <img
+                            src={logoUrl}
+                            alt="Tazaad"
+                            style={{
+                                height: `${logoSize}px`,
+                                width: 'auto',
+                                objectFit: 'contain',
+                                display: 'block'
+                            }}
+                            crossOrigin="anonymous"
+                        />
+                    </div>
+
+                    {/* Narrative Layer */}
+                    <div
+                        style={{
+                            position: 'absolute',
+                            inset: 0,
+                            zIndex: 10,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            padding: '80px',
+                            alignItems: textAlign === 'left' ? 'flex-start' : textAlign === 'right' ? 'flex-end' : 'center',
+                            justifyContent: 'center', // Vertically centered
+                        }}
+                    >
+                        <div style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: textAlign === 'left' ? 'flex-start' : textAlign === 'right' ? 'flex-end' : 'center',
+                            width: '100%'
+                        }}>
+                            {showBreakingNews && (
+                                <div
+                                    dir="rtl"
+                                    style={{
+                                        backgroundColor: 'var(--accent-red)',
+                                        color: 'white',
+                                        padding: '16px 28px 20px 28px',
+                                        borderRadius: '2px',
+                                        fontSize: `${fontSize * 0.75}px`,
+                                        fontWeight: 800,
+                                        fontFamily: 'var(--font-sindhi)',
+                                        marginBottom: '30px',
+                                        display: 'inline-block',
+                                        lineHeight: 1,
+                                        textRendering: 'optimizeLegibility',
+                                        WebkitFontSmoothing: 'antialiased',
+                                        fontFeatureSettings: '"kern" 1, "liga" 1, "clig" 1, "calt" 1',
+                                        fontVariantLigatures: 'contextual',
+                                        letterSpacing: '0',
+                                        whiteSpace: 'nowrap'
+                                    }}
+                                >
+                                    بريڪنگ نيوز
+                                </div>
+                            )}
+                            <div
+                                dir="rtl"
+                                className="lateef-bold"
+                                style={{
+                                    color: 'white',
+                                    fontSize: `${fontSize}px`,
+                                    lineHeight: lineHeight,
+                                    textAlign: textAlign,
+                                    fontWeight: fontWeight,
+                                    letterSpacing: '0',
+                                    width: '100%',
+                                    textRendering: 'optimizeLegibility',
+                                    WebkitFontSmoothing: 'antialiased',
+                                    wordSpacing: 'normal',
+                                    whiteSpace: 'pre-wrap',
+                                    wordBreak: 'break-word',
+                                    fontFeatureSettings: '"kern" 1, "liga" 1, "clig" 1, "calt" 1',
+                                    fontVariantLigatures: 'contextual'
+                                }}
+                            >
+                                {renderText()}
+                            </div>
+                            {subtitle && (
+                                <div
+                                    dir="rtl"
+                                    className="lateef-bold"
+                                    style={{
+                                        color: 'rgba(255,255,255,0.95)',
+                                        fontSize: `${subtitleFontSize}px`,
+                                        lineHeight: 1.2,
+                                        textAlign: textAlign,
+                                        fontWeight: 500,
+                                        letterSpacing: '0',
+                                        width: '100%',
+                                        marginTop: '10px',
+                                        textRendering: 'optimizeLegibility',
+                                        WebkitFontSmoothing: 'antialiased'
+                                    }}
+                                >
+                                    {subtitle}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </>
+            ) : layoutMode === 'quote' ? (
+                // Quote Split Layout Mode
+                <>
+                    {/* Top Image Section (50%) */}
+                    {imageUrl && (
+                        <div
+                            style={{
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                width: '100%',
+                                height: '50%',
+                                zIndex: 0,
+                                backgroundImage: `url(${imageUrl})`,
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'center',
+                                backgroundRepeat: 'no-repeat'
+                            }}
+                        />
+                    )}
+
+                    {/* Brand Identity Layer */}
+                    <div style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        padding: '55px',
+                        zIndex: 20,
+                        display: 'flex',
+                        justifyContent: 'flex-start'
+                    }}>
+                        <img
+                            src={logoUrl}
+                            alt="Tazaad"
+                            style={{
+                                height: `${logoSize}px`,
+                                width: 'auto',
+                                objectFit: 'contain',
+                                display: 'block'
+                            }}
+                            crossOrigin="anonymous"
+                        />
+                    </div>
+
+                    {/* Bottom Red Section */}
+                    <div style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: 0,
+                        width: '100%',
+                        bottom: 0,
+                        backgroundColor: '#cc0000',
+                        zIndex: 5,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        padding: '60px 80px',
+                    }}>
+                        {/* Quote Mark Icon */}
+                        <div style={{
+                            position: 'absolute',
+                            top: '40px',
+                            right: '60px',
+                            color: 'white',
+                            fontSize: '120px',
+                            fontWeight: 900,
+                            fontFamily: 'serif',
+                            lineHeight: 1,
+                            opacity: 0.9
+                        }}>
+                            ”
+                        </div>
+
+                        {/* Centered Text */}
+                        <div style={{
+                            flex: 1,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: '100%',
+                            zIndex: 10
+                        }}>
+                            <div
+                                dir="rtl"
+                                className="lateef-bold"
+                                style={{
+                                    color: 'white',
+                                    fontSize: `${fontSize}px`,
+                                    lineHeight: lineHeight,
+                                    textAlign: 'center',
+                                    fontWeight: fontWeight,
+                                    letterSpacing: '0',
+                                    width: '100%',
+                                    textRendering: 'optimizeLegibility',
+                                    WebkitFontSmoothing: 'antialiased',
+                                    wordSpacing: 'normal',
+                                    whiteSpace: 'pre-wrap',
+                                    wordBreak: 'break-word',
+                                    fontFeatureSettings: '"kern" 1, "liga" 1, "clig" 1, "calt" 1',
+                                    fontVariantLigatures: 'contextual'
+                                }}
+                            >
+                                {renderText()}
+                            </div>
+                        </div>
+
+                        {/* Subtitle at Bottom */}
+                        {subtitle && (
+                            <div
+                                dir="rtl"
+                                className="lateef-bold"
+                                style={{
+                                    color: 'rgba(255,255,255,0.95)',
+                                    fontSize: `${subtitleFontSize}px`,
+                                    lineHeight: 1.2,
+                                    textAlign: 'left',
+                                    fontWeight: 500,
+                                    letterSpacing: '0',
+                                    width: '100%',
+                                    marginTop: 'auto',
+                                    display: 'flex',
+                                    justifyContent: 'flex-start',
+                                    textRendering: 'optimizeLegibility',
+                                    WebkitFontSmoothing: 'antialiased'
+                                }}
+                            >
+                                {subtitle}
+                            </div>
+                        )}
+                    </div>
+                </>
             ) : (
                 // Overlay Layout Mode
                 <>
@@ -351,9 +597,9 @@ const PostContent = ({
                     bottom: 0,
                     left: 0,
                     right: 0,
-                    backgroundColor: layoutMode === 'split' ? 'transparent' : 'var(--accent-red)',
+                    backgroundColor: (layoutMode === 'split' || layoutMode === 'quote' || layoutMode === 'solid') ? 'transparent' : 'var(--accent-red)',
                     zIndex: 30,
-                    height: layoutMode === 'split' ? 0 : `${bottomBarHeight}px`
+                    height: (layoutMode === 'split' || layoutMode === 'quote' || layoutMode === 'solid') ? 0 : `${bottomBarHeight}px`
                 }}
             />
         </div>
@@ -375,7 +621,7 @@ export default function PostDesigner() {
     const [textY, setTextY] = useState(85);
     const [textAlign, setTextAlign] = useState<'left' | 'center' | 'right'>('center');
     const [gradientCoverage, setGradientCoverage] = useState(85);
-    const [layoutMode, setLayoutMode] = useState<'overlay' | 'split'>('overlay');
+    const [layoutMode, setLayoutMode] = useState<'overlay' | 'split' | 'solid' | 'quote'>('overlay');
     const [logoSize, setLogoSize] = useState(80);
     const [bottomBarHeight, setBottomBarHeight] = useState(18);
     const [showBreakingNews, setShowBreakingNews] = useState(false);
@@ -804,9 +1050,11 @@ export default function PostDesigner() {
                             {/* Layout Mode */}
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                                 <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Canvas Style</label>
-                                <div style={{ display: 'flex', gap: '4px', padding: '4px', backgroundColor: 'var(--bg-card)', borderRadius: '12px' }}>
-                                    <button onClick={() => setLayoutMode('overlay')} style={{ flex: 1, padding: '8px', borderRadius: '8px', backgroundColor: layoutMode === 'overlay' ? 'var(--accent-red)' : 'transparent', color: 'white', fontSize: '11px', fontWeight: 700 }}>Overlay</button>
-                                    <button onClick={() => setLayoutMode('split')} style={{ flex: 1, padding: '8px', borderRadius: '8px', backgroundColor: layoutMode === 'split' ? 'var(--accent-red)' : 'transparent', color: 'white', fontSize: '11px', fontWeight: 700 }}>Split</button>
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px', padding: '4px', backgroundColor: 'var(--bg-card)', borderRadius: '12px' }}>
+                                    <button onClick={() => setLayoutMode('overlay')} style={{ padding: '8px', borderRadius: '8px', backgroundColor: layoutMode === 'overlay' ? 'var(--accent-red)' : 'transparent', color: 'white', fontSize: '11px', fontWeight: 700 }}>Overlay</button>
+                                    <button onClick={() => setLayoutMode('split')} style={{ padding: '8px', borderRadius: '8px', backgroundColor: layoutMode === 'split' ? 'var(--accent-red)' : 'transparent', color: 'white', fontSize: '11px', fontWeight: 700 }}>Split</button>
+                                    <button onClick={() => setLayoutMode('solid')} style={{ padding: '8px', borderRadius: '8px', backgroundColor: layoutMode === 'solid' ? 'var(--accent-red)' : 'transparent', color: 'white', fontSize: '11px', fontWeight: 700 }}>Solid</button>
+                                    <button onClick={() => setLayoutMode('quote')} style={{ padding: '8px', borderRadius: '8px', backgroundColor: layoutMode === 'quote' ? 'var(--accent-red)' : 'transparent', color: 'white', fontSize: '11px', fontWeight: 700 }}>Quote</button>
                                 </div>
                             </div>
 
