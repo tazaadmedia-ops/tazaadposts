@@ -11,7 +11,10 @@ import {
     Image as ImageIcon,
     ChevronUp,
     ChevronDown,
-    Maximize2
+    Maximize2,
+    Settings,
+    X,
+    ChevronLeft
 } from 'lucide-react';
 
 const POST_WIDTH = 1080;
@@ -250,6 +253,7 @@ export default function PostDesigner() {
     const [isExporting, setIsExporting] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
     const [activeTab, setActiveTab] = useState('visuals'); // 'visuals', 'branding', 'narrative', 'adjustments'
+    const [showMobileSettings, setShowMobileSettings] = useState(false);
 
     useEffect(() => {
         const handleResize = () => {
@@ -358,47 +362,67 @@ export default function PostDesigner() {
                     </div>
                 </div>
 
-                <button
-                    onClick={handleDownload}
-                    disabled={isExporting}
-                    style={{
-                        padding: '8px 20px',
-                        backgroundColor: 'var(--accent-red)',
-                        color: 'white',
-                        borderRadius: '10px',
-                        fontSize: '12px',
-                        fontWeight: 700,
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '8px',
-                        boxShadow: '0 8px 20px -6px rgba(220, 38, 38, 0.4)'
-                    }}
-                >
-                    {isExporting ? 'Exporting...' : <><Download size={16} /> Download PNG</>}
-                </button>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    {isMobile && (
+                        <button
+                            onClick={() => setShowMobileSettings(!showMobileSettings)}
+                            style={{
+                                padding: '8px',
+                                backgroundColor: showMobileSettings ? 'var(--accent-red)' : 'rgba(255,255,255,0.05)',
+                                color: 'white',
+                                borderRadius: '8px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                border: 'none'
+                            }}
+                        >
+                            {showMobileSettings ? <X size={18} /> : <Settings size={18} />}
+                        </button>
+                    )}
+                    <button
+                        onClick={handleDownload}
+                        disabled={isExporting}
+                        style={{
+                            padding: isMobile ? '8px 12px' : '8px 20px',
+                            backgroundColor: 'black',
+                            color: 'white',
+                            borderRadius: '10px',
+                            fontSize: '12px',
+                            fontWeight: 700,
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            border: '1px solid var(--border-subtle)',
+                            boxShadow: '0 4px 12px rgba(0,0,0,0.5)'
+                        }}
+                    >
+                        {isExporting ? '...' : <><Download size={16} /> <span style={{ display: isMobile ? 'none' : 'inline' }}>Download PNG</span></>}
+                    </button>
+                </div>
             </header>
 
             <div style={{
                 flex: 1,
                 display: 'flex',
                 flexDirection: isMobile ? 'column' : 'row',
-                height: isMobile ? 'auto' : 'calc(100vh - 72px)',
-                overflow: isMobile ? 'visible' : 'hidden',
+                height: isMobile && showMobileSettings ? 'auto' : isMobile ? 'calc(100vh - 56px)' : 'calc(100vh - 60px)',
+                overflow: isMobile && showMobileSettings ? 'visible' : 'hidden',
                 position: 'relative'
             }}>
                 {/* Sidebar Controls - On top in mobile */}
                 <aside style={{
                     width: isMobile ? '100%' : '340px',
+                    height: isMobile ? 'calc(100vh - 56px)' : 'auto',
                     backgroundColor: 'var(--bg-panel)',
                     borderRight: isMobile ? 'none' : '1px solid var(--border-subtle)',
                     borderBottom: isMobile ? '1px solid var(--border-subtle)' : 'none',
-                    display: 'flex',
+                    display: isMobile && !showMobileSettings ? 'none' : 'flex',
                     flexDirection: 'column',
                     zIndex: 50,
-                    overflowY: isMobile ? 'visible' : 'auto',
+                    overflowY: 'auto',
                     order: isMobile ? 2 : 1,
-                    minHeight: isMobile ? '300px' : 'auto',
-                    paddingBottom: isMobile ? '80px' : '0' // Extra room for mobile
+                    transition: 'all 0.3s ease-in-out'
                 }}>
                     {/* Mobile Tab Navigation */}
                     {isMobile && (
@@ -783,17 +807,16 @@ export default function PostDesigner() {
                 {/* Live Preview Area - On top in mobile (order changed) */}
                 <main ref={containerRef} style={{
                     flex: 1,
-                    position: isMobile ? 'sticky' : 'relative',
-                    top: isMobile ? '56px' : 0,
+                    position: 'relative',
                     zIndex: 40,
-                    display: 'grid',
+                    display: isMobile && showMobileSettings ? 'none' : 'grid',
                     placeItems: 'center',
-                    padding: isMobile ? '12px' : '40px',
+                    padding: isMobile ? '16px' : '40px',
                     backgroundColor: 'var(--bg-main)',
                     overflow: 'hidden',
                     order: isMobile ? 1 : 2,
-                    minHeight: isMobile ? '400px' : 'auto',
-                    borderBottom: isMobile ? '1px solid var(--border-subtle)' : 'none'
+                    minHeight: isMobile ? 'calc(100vh - 56px)' : 'auto',
+                    borderBottom: 'none'
                 }}>
                     {/* Subtle Grid */}
                     <div style={{
