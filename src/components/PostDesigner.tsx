@@ -255,22 +255,17 @@ export default function PostDesigner() {
     const [isExporting, setIsExporting] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
     const [activeTab, setActiveTab] = useState('visuals'); // 'visuals', 'branding', 'narrative', 'adjustments'
-    const [vh, setVh] = useState('100vh');
 
     useEffect(() => {
         const handleResize = () => {
             setIsMobile(window.innerWidth < 1024);
-            // Stable viewport height for mobile
-            if (window.innerWidth < 1024) {
-                setVh(`${window.innerHeight}px`);
-            } else {
-                setVh('100vh');
-            }
-        };
-        handleResize();
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
+            const handleResize = () => {
+                setIsMobile(window.innerWidth < 1024);
+            };
+            handleResize();
+            window.addEventListener('resize', handleResize);
+            return () => window.removeEventListener('resize', handleResize);
+        }, []);
 
     // --- Refs ---
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -287,7 +282,7 @@ export default function PostDesigner() {
             const availableH = clientHeight - padding;
             const scaleX = availableW / POST_WIDTH;
             const scaleY = availableH / POST_HEIGHT;
-            const newScale = Math.min(scaleX, scaleY, 1);
+            const newScale = Math.min(scaleX, scaleY, 0.95); // Slightly less than 1 to ensure breathing room
             setScale(newScale);
         };
 
@@ -339,7 +334,7 @@ export default function PostDesigner() {
     };
 
     return (
-        <div className="designer-wrapper" style={{ height: vh, display: 'flex', flexDirection: 'column', backgroundColor: 'var(--bg-main)', overflow: 'hidden' }}>
+        <div className="designer-wrapper" style={{ height: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--bg-main)', overflow: 'hidden' }}>
             {/* Top Header */}
             <header style={{
                 height: isMobile ? '56px' : '60px',
