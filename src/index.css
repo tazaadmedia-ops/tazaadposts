@@ -1,0 +1,100 @@
+@font-face {
+    font-family: 'SF Arabic';
+    src: url('/Fonts/SF-Arabic.woff2') format('woff2'),
+        url('/Fonts/SF-Arabic.woff') format('woff'),
+        url('/Fonts/SF-Arabic.ttf') format('truetype');
+    font-weight: 100 900;
+    font-display: swap;
+}
+
+:root {
+    /* Colors - Sleek Dark Palette */
+    --bg-main: #050505;
+    --bg-panel: #0a0a0c;
+    --bg-card: #0f172a;
+    --accent-red: #b80000;
+    --accent-red-hover: #a00000;
+    --text-primary: #ffffff;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --border-subtle: rgba(255, 255, 255, 0.05);
+    --border-strong: rgba(255, 255, 255, 0.1);
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.08);
+
+    /* Typography */
+    --font-sans: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-sindhi: 'SF Arabic', 'Lateef', serif;
+
+    /* Spacing & Radii */
+    --radius-lg: 1.25rem;
+    --radius-md: 0.75rem;
+    --radius-sm: 0.5rem;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+/* Utilities */
+.glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+}
+
+.lateef-bold {
+    font-family: var(--font-sindhi);
+    font-weight: 700;
+}
+
+.premium-shadow {
+    box-shadow: 0 40px 120px -20px rgba(0, 0, 0, 0.9);
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+input[type="range"] {
+    width: 100%;
+    accent-color: var(--accent-red);
+}
