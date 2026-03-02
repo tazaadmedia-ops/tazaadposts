@@ -154,7 +154,7 @@ const PostContent = ({
                                 fontSize: `${fontSize * 0.75}px`,
                                 fontWeight: 600,
                                 fontFamily: 'var(--font-sindhi)',
-                                marginBottom: '2px',
+                                marginBottom: '8px',
                                 display: 'inline-block',
                                 lineHeight: 1.2,     // Better vertical balance for Sindhi characters
                                 textRendering: 'optimizeLegibility',
@@ -515,25 +515,41 @@ export default function PostDesigner() {
                                 </button>
                             </div>
 
-                            <textarea
-                                value={text}
-                                onChange={e => setText(e.target.value)}
-                                dir="rtl"
-                                placeholder="توهان جي لکڻ هتي..."
-                                className="lateef-bold"
-                                style={{
-                                    width: '100%',
-                                    height: '140px',
-                                    backgroundColor: 'var(--bg-card)',
-                                    border: '1px solid var(--border-subtle)',
-                                    borderRadius: '20px',
-                                    padding: '16px',
-                                    color: 'white',
-                                    fontSize: '20px',
-                                    resize: 'none',
-                                    outline: 'none'
-                                }}
-                            />
+                            <div style={{ position: 'relative' }}>
+                                <textarea
+                                    value={text}
+                                    onChange={e => setText(e.target.value.slice(0, 100))}
+                                    dir="rtl"
+                                    placeholder="توهان جي لکڻ هتي..."
+                                    className="lateef-bold"
+                                    maxLength={100}
+                                    style={{
+                                        width: '100%',
+                                        height: '140px',
+                                        backgroundColor: 'var(--bg-card)',
+                                        border: '1px solid var(--border-subtle)',
+                                        borderRadius: '20px',
+                                        padding: '16px 16px 40px 16px',
+                                        color: 'white',
+                                        fontSize: '20px',
+                                        resize: 'none',
+                                        outline: 'none'
+                                    }}
+                                />
+                                <div style={{
+                                    position: 'absolute',
+                                    bottom: '12px',
+                                    left: '16px',
+                                    fontSize: '10px',
+                                    fontWeight: 700,
+                                    color: text.length >= 100 ? 'var(--accent-red)' : 'var(--text-muted)',
+                                    backgroundColor: 'rgba(0,0,0,0.3)',
+                                    padding: '2px 8px',
+                                    borderRadius: '4px'
+                                }}>
+                                    {text.length}/100
+                                </div>
+                            </div>
 
                             <div style={{ position: 'relative' }}>
                                 <Type size={14} color="var(--text-muted)" style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)' }} />
@@ -604,7 +620,7 @@ export default function PostDesigner() {
                                     <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Letter Spacing</label>
                                     <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{letterSpacing}em</span>
                                 </div>
-                                <input type="range" min="-0.1" max="0.1" step="0.01" value={letterSpacing} onChange={e => setLetterSpacing(parseFloat(e.target.value))} />
+                                <input type="range" min="-0.15" max="0.15" step="0.01" value={letterSpacing} onChange={e => setLetterSpacing(parseFloat(e.target.value))} />
                             </div>
 
                             {/* Alignment */}
@@ -623,7 +639,7 @@ export default function PostDesigner() {
                                     <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Vertical Pos</label>
                                     <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{textY}%</span>
                                 </div>
-                                <input type="range" min="10" max="92" value={textY} onChange={e => setTextY(parseInt(e.target.value))} />
+                                <input type="range" min="10" max="98" value={textY} onChange={e => setTextY(parseInt(e.target.value))} />
                             </div>
                         </section>
                     </div>
