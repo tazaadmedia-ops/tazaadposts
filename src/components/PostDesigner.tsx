@@ -399,19 +399,7 @@ export default function PostDesigner() {
                 position: 'relative'
             }}>
                 {/* Sidebar Controls - Bottom on mobile */}
-                <aside style={{
-                    width: isMobile ? '100%' : '340px',
-                    height: isMobile ? '45%' : 'auto',
-                    flex: isMobile ? '0 0 45%' : 'none',
-                    backgroundColor: 'var(--bg-panel)',
-                    borderRight: isMobile ? 'none' : '1px solid var(--border-subtle)',
-                    borderTop: isMobile ? '1px solid var(--border-subtle)' : 'none',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    zIndex: 50,
-                    overflowY: isMobile ? 'hidden' : 'auto',
-                    order: isMobile ? 2 : 1
-                }}>
+                <aside className="designer-sidebar" data-active-tab={activeTab}>
                     {/* Mobile Tab Navigation */}
                     {isMobile && (
                         <div style={{
@@ -452,318 +440,309 @@ export default function PostDesigner() {
                         </div>
                     )}
 
-                    <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', padding: isMobile ? '20px' : '24px', display: 'flex', flexDirection: 'column', gap: '32px' }}>
+                    <div className="sidebar-inner-content">
 
-                        {(!isMobile || activeTab === 'visuals') && (
-                            <section style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                    <span style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--text-muted)' }}>Visuals</span>
-                                    <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--border-subtle)' }} />
-                                </div>
+                        <section className="settings-section section-visuals" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <span style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--text-muted)' }}>Visuals</span>
+                                <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--border-subtle)' }} />
+                            </div>
 
-                                <div
-                                    onClick={() => fileInputRef.current?.click()}
-                                    className="glass"
-                                    style={{
-                                        height: '110px',
-                                        borderRadius: '20px',
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        gap: '8px',
-                                        cursor: 'pointer',
-                                        position: 'relative',
-                                        overflow: 'hidden'
-                                    }}
-                                >
-                                    <input ref={fileInputRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleImageUpload} />
-                                    {imageUrl ? (
-                                        <>
-                                            <img src={imageUrl} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.3 }} />
-                                            <div style={{ position: 'relative', zIndex: 1, fontSize: '10px', fontWeight: 800, color: 'white', backgroundColor: 'rgba(0,0,0,0.5)', padding: '4px 12px', borderRadius: '6px' }}>Change Texture</div>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <ImageIcon size={20} color="var(--text-muted)" />
-                                            <span style={{ fontSize: '10px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Upload Image</span>
-                                        </>
-                                    )}
-                                </div>
+                            <div
+                                onClick={() => fileInputRef.current?.click()}
+                                className="glass"
+                                style={{
+                                    height: '110px',
+                                    borderRadius: '20px',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    gap: '8px',
+                                    cursor: 'pointer',
+                                    position: 'relative',
+                                    overflow: 'hidden'
+                                }}
+                            >
+                                <input ref={fileInputRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleImageUpload} />
+                                {imageUrl ? (
+                                    <>
+                                        <img src={imageUrl} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.3 }} />
+                                        <div style={{ position: 'relative', zIndex: 1, fontSize: '10px', fontWeight: 800, color: 'white', backgroundColor: 'rgba(0,0,0,0.5)', padding: '4px 12px', borderRadius: '6px' }}>Change Texture</div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <ImageIcon size={20} color="var(--text-muted)" />
+                                        <span style={{ fontSize: '10px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Upload Image</span>
+                                    </>
+                                )}
+                            </div>
 
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                        <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Background</label>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px', backgroundColor: 'var(--bg-card)', borderRadius: '12px', border: '1px solid var(--border-subtle)' }}>
-                                            <input type="color" value={bgColor} onChange={e => setBgColor(e.target.value)} style={{ width: '24px', height: '24px', borderRadius: '4px', border: 'none', backgroundColor: 'transparent', cursor: 'pointer' }} />
-                                            <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{bgColor.toUpperCase()}</span>
-                                        </div>
-                                    </div>
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                        <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Highlight</label>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px', backgroundColor: 'var(--bg-card)', borderRadius: '12px', border: '1px solid var(--border-subtle)' }}>
-                                            <input type="color" value={highlightColor} onChange={e => setHighlightColor(e.target.value)} style={{ width: '24px', height: '24px', borderRadius: '4px', border: 'none', backgroundColor: 'transparent', cursor: 'pointer' }} />
-                                            <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{highlightColor.toUpperCase()}</span>
-                                        </div>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                    <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Background</label>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px', backgroundColor: 'var(--bg-card)', borderRadius: '12px', border: '1px solid var(--border-subtle)' }}>
+                                        <input type="color" value={bgColor} onChange={e => setBgColor(e.target.value)} style={{ width: '24px', height: '24px', borderRadius: '4px', border: 'none', backgroundColor: 'transparent', cursor: 'pointer' }} />
+                                        <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{bgColor.toUpperCase()}</span>
                                     </div>
                                 </div>
-                            </section>
-                        )}
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                    <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Highlight</label>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px', backgroundColor: 'var(--bg-card)', borderRadius: '12px', border: '1px solid var(--border-subtle)' }}>
+                                        <input type="color" value={highlightColor} onChange={e => setHighlightColor(e.target.value)} style={{ width: '24px', height: '24px', borderRadius: '4px', border: 'none', backgroundColor: 'transparent', cursor: 'pointer' }} />
+                                        <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{highlightColor.toUpperCase()}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
 
                         {/* Branding Section */}
-                        {(!isMobile || activeTab === 'branding') && (
-                            <section style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                    <span style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--text-muted)' }}>Branding</span>
-                                    <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--border-subtle)' }} />
-                                </div>
+                        <section className="settings-section section-branding" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <span style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--text-muted)' }}>Branding</span>
+                                <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--border-subtle)' }} />
+                            </div>
 
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', padding: '4px', backgroundColor: 'var(--bg-card)', borderRadius: '14px' }}>
-                                    <button
-                                        onClick={() => setLogoUrl('/TazaadLogo-01.png')}
-                                        style={{
-                                            padding: '10px',
-                                            borderRadius: '10px',
-                                            backgroundColor: logoUrl === '/TazaadLogo-01.png' ? 'var(--accent-red)' : 'transparent',
-                                            color: 'white',
-                                            fontSize: '11px',
-                                            fontWeight: 800
-                                        }}
-                                    >
-                                        Logo 01
-                                    </button>
-                                    <button
-                                        onClick={() => setLogoUrl('/TazaadLogo-02.png')}
-                                        style={{
-                                            padding: '10px',
-                                            borderRadius: '10px',
-                                            backgroundColor: logoUrl === '/TazaadLogo-02.png' ? 'var(--accent-red)' : 'transparent',
-                                            color: 'white',
-                                            fontSize: '11px',
-                                            fontWeight: 800
-                                        }}
-                                    >
-                                        Logo 02
-                                    </button>
-                                </div>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', padding: '4px', backgroundColor: 'var(--bg-card)', borderRadius: '14px' }}>
+                                <button
+                                    onClick={() => setLogoUrl('/TazaadLogo-01.png')}
+                                    style={{
+                                        padding: '10px',
+                                        borderRadius: '10px',
+                                        backgroundColor: logoUrl === '/TazaadLogo-01.png' ? 'var(--accent-red)' : 'transparent',
+                                        color: 'white',
+                                        fontSize: '11px',
+                                        fontWeight: 800
+                                    }}
+                                >
+                                    Logo 01
+                                </button>
+                                <button
+                                    onClick={() => setLogoUrl('/TazaadLogo-02.png')}
+                                    style={{
+                                        padding: '10px',
+                                        borderRadius: '10px',
+                                        backgroundColor: logoUrl === '/TazaadLogo-02.png' ? 'var(--accent-red)' : 'transparent',
+                                        color: 'white',
+                                        fontSize: '11px',
+                                        fontWeight: 800
+                                    }}
+                                >
+                                    Logo 02
+                                </button>
+                            </div>
 
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                        <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Logo Size</label>
-                                        <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{logoSize}px</span>
-                                    </div>
-                                    <input type="range" min="30" max="250" value={logoSize} onChange={e => setLogoSize(parseInt(e.target.value))} />
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Logo Size</label>
+                                    <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{logoSize}px</span>
                                 </div>
-                            </section>
-                        )}
-
+                                <input type="range" min="30" max="250" value={logoSize} onChange={e => setLogoSize(parseInt(e.target.value))} />
+                            </div>
+                        </section>
                         {/* Narrative Section */}
-                        {(!isMobile || activeTab === 'narrative') && (
-                            <section style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                    <span style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--text-muted)' }}>Narrative</span>
-                                    <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--border-subtle)' }} />
-                                </div>
+                        <section className="settings-section section-narrative" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <span style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--text-muted)' }}>Narrative</span>
+                                <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--border-subtle)' }} />
+                            </div>
 
-                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px', backgroundColor: 'var(--bg-card)', borderRadius: '12px', border: '1px solid var(--border-subtle)' }}>
-                                    <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-primary)' }}>Breaking News Label</span>
-                                    <button
-                                        onClick={() => {
-                                            setShowBreakingNews(!showBreakingNews);
-                                            if (!showBreakingNews) {
-                                                setTextAlign('right');
-                                            }
-                                        }}
-                                        style={{
-                                            padding: '6px 16px',
-                                            borderRadius: '20px',
-                                            backgroundColor: showBreakingNews ? 'var(--accent-red)' : 'var(--bg-app)',
-                                            color: showBreakingNews ? 'white' : 'var(--text-secondary)',
-                                            border: '1px solid ' + (showBreakingNews ? 'var(--accent-red)' : 'var(--border-subtle)'),
-                                            fontSize: '11px',
-                                            fontWeight: 800,
-                                            cursor: 'pointer',
-                                            transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
-                                        }}
-                                    >
-                                        {showBreakingNews ? 'ON' : 'OFF'}
-                                    </button>
-                                </div>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px', backgroundColor: 'var(--bg-card)', borderRadius: '12px', border: '1px solid var(--border-subtle)' }}>
+                                <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-primary)' }}>Breaking News Label</span>
+                                <button
+                                    onClick={() => {
+                                        setShowBreakingNews(!showBreakingNews);
+                                        if (!showBreakingNews) {
+                                            setTextAlign('right');
+                                        }
+                                    }}
+                                    style={{
+                                        padding: '6px 16px',
+                                        borderRadius: '20px',
+                                        backgroundColor: showBreakingNews ? 'var(--accent-red)' : 'var(--bg-app)',
+                                        color: showBreakingNews ? 'white' : 'var(--text-secondary)',
+                                        border: '1px solid ' + (showBreakingNews ? 'var(--accent-red)' : 'var(--border-subtle)'),
+                                        fontSize: '11px',
+                                        fontWeight: 800,
+                                        cursor: 'pointer',
+                                        transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+                                    }}
+                                >
+                                    {showBreakingNews ? 'ON' : 'OFF'}
+                                </button>
+                            </div>
 
-                                <div style={{ position: 'relative' }}>
-                                    <textarea
-                                        value={text}
-                                        onChange={e => setText(e.target.value.slice(0, 100))}
-                                        dir="rtl"
-                                        placeholder="توهان جي لکڻ هتي..."
-                                        className="lateef-bold"
-                                        maxLength={100}
-                                        style={{
-                                            width: '100%',
-                                            height: '140px',
-                                            backgroundColor: 'var(--bg-card)',
-                                            border: '1px solid var(--border-subtle)',
-                                            borderRadius: '20px',
-                                            padding: '16px 16px 40px 16px',
-                                            color: 'white',
-                                            fontSize: '20px',
-                                            resize: 'none',
-                                            outline: 'none'
-                                        }}
-                                    />
-                                    <div style={{
-                                        position: 'absolute',
-                                        bottom: '12px',
-                                        left: '16px',
-                                        fontSize: '10px',
-                                        fontWeight: 700,
-                                        color: text.length >= 100 ? 'var(--accent-red)' : 'var(--text-muted)',
-                                        backgroundColor: 'rgba(0,0,0,0.3)',
-                                        padding: '2px 8px',
-                                        borderRadius: '4px'
-                                    }}>
-                                        {text.length}/100
-                                    </div>
+                            <div style={{ position: 'relative' }}>
+                                <textarea
+                                    value={text}
+                                    onChange={e => setText(e.target.value.slice(0, 100))}
+                                    dir="rtl"
+                                    placeholder="توهان جي لکڻ هتي..."
+                                    className="lateef-bold"
+                                    maxLength={100}
+                                    style={{
+                                        width: '100%',
+                                        height: '140px',
+                                        backgroundColor: 'var(--bg-card)',
+                                        border: '1px solid var(--border-subtle)',
+                                        borderRadius: '20px',
+                                        padding: '16px 16px 40px 16px',
+                                        color: 'white',
+                                        fontSize: '20px',
+                                        resize: 'none',
+                                        outline: 'none'
+                                    }}
+                                />
+                                <div style={{
+                                    position: 'absolute',
+                                    bottom: '12px',
+                                    left: '16px',
+                                    fontSize: '10px',
+                                    fontWeight: 700,
+                                    color: text.length >= 100 ? 'var(--accent-red)' : 'var(--text-muted)',
+                                    backgroundColor: 'rgba(0,0,0,0.3)',
+                                    padding: '2px 8px',
+                                    borderRadius: '4px'
+                                }}>
+                                    {text.length}/100
                                 </div>
+                            </div>
 
-                                <div style={{ position: 'relative' }}>
-                                    <Type size={14} color="var(--text-muted)" style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)' }} />
-                                    <input
-                                        type="text"
-                                        value={highlightText}
-                                        onChange={e => setHighlightText(e.target.value)}
-                                        dir="rtl"
-                                        placeholder="لفظ نمايان ڪريو"
-                                        className="lateef-bold"
-                                        style={{
-                                            width: '100%',
-                                            backgroundColor: 'var(--bg-card)',
-                                            border: '1px solid var(--border-subtle)',
-                                            borderRadius: '12px',
-                                            padding: '10px 40px 10px 12px',
-                                            color: 'white',
-                                            fontSize: '16px',
-                                            outline: 'none'
-                                        }}
-                                    />
+                            <div style={{ position: 'relative' }}>
+                                <Type size={14} color="var(--text-muted)" style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)' }} />
+                                <input
+                                    type="text"
+                                    value={highlightText}
+                                    onChange={e => setHighlightText(e.target.value)}
+                                    dir="rtl"
+                                    placeholder="لفظ نمايان ڪريو"
+                                    className="lateef-bold"
+                                    style={{
+                                        width: '100%',
+                                        backgroundColor: 'var(--bg-card)',
+                                        border: '1px solid var(--border-subtle)',
+                                        borderRadius: '12px',
+                                        padding: '10px 40px 10px 12px',
+                                        color: 'white',
+                                        fontSize: '16px',
+                                        outline: 'none'
+                                    }}
+                                />
+                            </div>
+
+                            <div style={{ position: 'relative' }}>
+                                <textarea
+                                    value={subtitle}
+                                    onChange={e => setSubtitle(e.target.value.slice(0, 100))}
+                                    dir="rtl"
+                                    placeholder="ذيلي عنوان (Subtitle)..."
+                                    className="lateef-bold"
+                                    maxLength={100}
+                                    style={{
+                                        width: '100%',
+                                        height: '80px',
+                                        backgroundColor: 'var(--bg-card)',
+                                        border: '1px solid var(--border-subtle)',
+                                        borderRadius: '16px',
+                                        padding: '12px',
+                                        color: 'rgba(255,255,255,0.8)',
+                                        fontSize: '16px',
+                                        resize: 'none',
+                                        outline: 'none'
+                                    }}
+                                />
+                                <div style={{
+                                    position: 'absolute',
+                                    bottom: '8px',
+                                    left: '12px',
+                                    fontSize: '9px',
+                                    fontWeight: 700,
+                                    color: 'var(--text-muted)',
+                                    backgroundColor: 'rgba(0,0,0,0.2)',
+                                    padding: '1px 6px',
+                                    borderRadius: '4px'
+                                }}>
+                                    {subtitle.length}/100
                                 </div>
-
-                                <div style={{ position: 'relative' }}>
-                                    <textarea
-                                        value={subtitle}
-                                        onChange={e => setSubtitle(e.target.value.slice(0, 100))}
-                                        dir="rtl"
-                                        placeholder="ذيلي عنوان (Subtitle)..."
-                                        className="lateef-bold"
-                                        maxLength={100}
-                                        style={{
-                                            width: '100%',
-                                            height: '80px',
-                                            backgroundColor: 'var(--bg-card)',
-                                            border: '1px solid var(--border-subtle)',
-                                            borderRadius: '16px',
-                                            padding: '12px',
-                                            color: 'rgba(255,255,255,0.8)',
-                                            fontSize: '16px',
-                                            resize: 'none',
-                                            outline: 'none'
-                                        }}
-                                    />
-                                    <div style={{
-                                        position: 'absolute',
-                                        bottom: '8px',
-                                        left: '12px',
-                                        fontSize: '9px',
-                                        fontWeight: 700,
-                                        color: 'var(--text-muted)',
-                                        backgroundColor: 'rgba(0,0,0,0.2)',
-                                        padding: '1px 6px',
-                                        borderRadius: '4px'
-                                    }}>
-                                        {subtitle.length}/100
-                                    </div>
-                                </div>
-                            </section>
-                        )}
-
+                            </div>
+                        </section>
                         {/* Adjustments Section */}
-                        {(!isMobile || activeTab === 'adjustments') && (
-                            <section style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                    <span style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--text-muted)' }}>Adjustments</span>
-                                    <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--border-subtle)' }} />
-                                </div>
+                        <section className="settings-section section-adjustments" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <span style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--text-muted)' }}>Adjustments</span>
+                                <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--border-subtle)' }} />
+                            </div>
 
-                                {/* Text Size */}
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                    <input type="range" min="40" max="180" value={fontSize} onChange={e => setFontSize(parseInt(e.target.value))} />
-                                </div>
+                            {/* Text Size */}
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                <input type="range" min="40" max="180" value={fontSize} onChange={e => setFontSize(parseInt(e.target.value))} />
+                            </div>
 
-                                {/* Subtitle Font Size */}
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                        <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Subtitle Size</label>
-                                        <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{subtitleFontSize}px</span>
-                                    </div>
-                                    <input type="range" min="20" max="120" value={subtitleFontSize} onChange={e => setSubtitleFontSize(parseInt(e.target.value))} />
+                            {/* Subtitle Font Size */}
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Subtitle Size</label>
+                                    <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{subtitleFontSize}px</span>
                                 </div>
+                                <input type="range" min="20" max="120" value={subtitleFontSize} onChange={e => setSubtitleFontSize(parseInt(e.target.value))} />
+                            </div>
 
-                                {/* Font Weight */}
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                    <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Font Weight</label>
-                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                                        {[400, 500, 600, 700, 800, 900].map(weight => (
-                                            <button
-                                                key={weight}
-                                                onClick={() => setFontWeight(weight)}
-                                                style={{
-                                                    padding: '6px 10px',
-                                                    borderRadius: '8px',
-                                                    backgroundColor: fontWeight === weight ? 'var(--accent-red)' : 'var(--bg-card)',
-                                                    color: 'white',
-                                                    fontSize: '10px',
-                                                    fontWeight: weight,
-                                                    border: '1px solid ' + (fontWeight === weight ? 'var(--accent-red)' : 'var(--border-subtle)')
-                                                }}
-                                            >
-                                                {weight === 400 ? 'Reg' : weight === 500 ? 'Med' : weight === 600 ? 'Semi' : weight === 700 ? 'Bold' : weight === 800 ? 'Ext' : 'Blk'}
-                                            </button>
-                                        ))}
-                                    </div>
+                            {/* Font Weight */}
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Font Weight</label>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                                    {[400, 500, 600, 700, 800, 900].map(weight => (
+                                        <button
+                                            key={weight}
+                                            onClick={() => setFontWeight(weight)}
+                                            style={{
+                                                padding: '6px 10px',
+                                                borderRadius: '8px',
+                                                backgroundColor: fontWeight === weight ? 'var(--accent-red)' : 'var(--bg-card)',
+                                                color: 'white',
+                                                fontSize: '10px',
+                                                fontWeight: weight,
+                                                border: '1px solid ' + (fontWeight === weight ? 'var(--accent-red)' : 'var(--border-subtle)')
+                                            }}
+                                        >
+                                            {weight === 400 ? 'Reg' : weight === 500 ? 'Med' : weight === 600 ? 'Semi' : weight === 700 ? 'Bold' : weight === 800 ? 'Ext' : 'Blk'}
+                                        </button>
+                                    ))}
                                 </div>
+                            </div>
 
 
-                                {/* Alignment */}
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                    <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Alignment</label>
-                                    <div style={{ display: 'flex', gap: '4px', padding: '4px', backgroundColor: 'var(--bg-card)', borderRadius: '12px' }}>
-                                        <button onClick={() => setTextAlign('right')} style={{ flex: 1, padding: '8px', borderRadius: '8px', backgroundColor: textAlign === 'right' ? 'var(--accent-red)' : 'transparent', color: 'white' }}><AlignRight size={16} /></button>
-                                        <button onClick={() => setTextAlign('center')} style={{ flex: 1, padding: '8px', borderRadius: '8px', backgroundColor: textAlign === 'center' ? 'var(--accent-red)' : 'transparent', color: 'white' }}><AlignCenter size={16} /></button>
-                                        <button onClick={() => setTextAlign('left')} style={{ flex: 1, padding: '8px', borderRadius: '8px', backgroundColor: textAlign === 'left' ? 'var(--accent-red)' : 'transparent', color: 'white' }}><AlignLeft size={16} /></button>
-                                    </div>
+                            {/* Alignment */}
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Alignment</label>
+                                <div style={{ display: 'flex', gap: '4px', padding: '4px', backgroundColor: 'var(--bg-card)', borderRadius: '12px' }}>
+                                    <button onClick={() => setTextAlign('right')} style={{ flex: 1, padding: '8px', borderRadius: '8px', backgroundColor: textAlign === 'right' ? 'var(--accent-red)' : 'transparent', color: 'white' }}><AlignRight size={16} /></button>
+                                    <button onClick={() => setTextAlign('center')} style={{ flex: 1, padding: '8px', borderRadius: '8px', backgroundColor: textAlign === 'center' ? 'var(--accent-red)' : 'transparent', color: 'white' }}><AlignCenter size={16} /></button>
+                                    <button onClick={() => setTextAlign('left')} style={{ flex: 1, padding: '8px', borderRadius: '8px', backgroundColor: textAlign === 'left' ? 'var(--accent-red)' : 'transparent', color: 'white' }}><AlignLeft size={16} /></button>
                                 </div>
+                            </div>
 
-                                {/* Vertical Position */}
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                        <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Vertical Pos</label>
-                                        <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{textY}%</span>
-                                    </div>
-                                    <input type="range" min="10" max="98" value={textY} onChange={e => setTextY(parseInt(e.target.value))} />
+                            {/* Vertical Position */}
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Vertical Pos</label>
+                                    <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{textY}%</span>
                                 </div>
+                                <input type="range" min="10" max="98" value={textY} onChange={e => setTextY(parseInt(e.target.value))} />
+                            </div>
 
-                                {/* Gradient Coverage */}
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                        <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Gradient Coverage</label>
-                                        <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{gradientCoverage}%</span>
-                                    </div>
-                                    <input type="range" min="0" max="100" value={gradientCoverage} onChange={e => setGradientCoverage(parseInt(e.target.value))} />
+                            {/* Gradient Coverage */}
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Gradient Coverage</label>
+                                    <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{gradientCoverage}%</span>
                                 </div>
-                            </section>
-                        )}
+                                <input type="range" min="0" max="100" value={gradientCoverage} onChange={e => setGradientCoverage(parseInt(e.target.value))} />
+                            </div>
+                        </section>
                     </div>
 
+                    {/* Export Button (Sticky Bottom) */}
                     <div style={{ padding: '24px', borderTop: '1px solid var(--border-subtle)', flexShrink: 0 }}>
                         <button
                             onClick={handleDownload}
@@ -790,21 +769,8 @@ export default function PostDesigner() {
                     </div>
                 </aside>
 
-                {/* Live Preview Area - On top in mobile */}
-                <main ref={containerRef} style={{
-                    flex: isMobile ? '1 1 auto' : '1',
-                    minHeight: 0,
-                    height: 'auto',
-                    position: 'relative',
-                    zIndex: 40,
-                    display: 'grid',
-                    placeItems: 'center',
-                    padding: isMobile ? '12px' : '40px',
-                    backgroundColor: 'var(--bg-main)',
-                    overflow: 'hidden',
-                    order: isMobile ? 1 : 2,
-                    borderBottom: isMobile ? '1px solid var(--border-subtle)' : 'none'
-                }}>
+                {/* Live Preview Area */}
+                <main ref={containerRef} className="designer-main">
                     {/* Subtle Grid */}
                     <div style={{
                         position: 'absolute',
@@ -813,7 +779,6 @@ export default function PostDesigner() {
                         backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)',
                         backgroundSize: '32px 32px'
                     }} />
-
                     {/* Artboard Preview */}
                     <div style={{ width: POST_WIDTH * scale, height: POST_HEIGHT * scale, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
                         <div
@@ -855,10 +820,10 @@ export default function PostDesigner() {
                         {Math.round(scale * 100)}% View
                     </div>
                 </main>
-            </div>
+            </div >
 
             {/* Hidden Master Artboard for Export */}
-            <div style={{
+            < div style={{
                 position: 'absolute',
                 top: 0,
                 left: 0,
@@ -868,7 +833,8 @@ export default function PostDesigner() {
                 pointerEvents: 'none',
                 zIndex: -100,
                 overflow: 'hidden'
-            }}>
+            }
+            }>
                 <div ref={masterArtboardRef} style={{ width: POST_WIDTH, height: POST_HEIGHT }}>
                     <PostContent
                         imageUrl={imageUrl}
@@ -891,7 +857,7 @@ export default function PostDesigner() {
                         subtitleFontSize={subtitleFontSize}
                     />
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 }
