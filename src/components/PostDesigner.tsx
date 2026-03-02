@@ -145,7 +145,7 @@ const PostContent = ({
                             style={{
                                 backgroundColor: 'var(--accent-red)',
                                 color: 'white',
-                                padding: '3px 18px 6px 18px', // Increased bottom padding to prevent cut
+                                padding: '10px 22px 12px 22px', // Increased padding for more spacious look
                                 borderRadius: '2px',
                                 fontSize: `${fontSize * 0.75}px`,
                                 fontWeight: 600,
