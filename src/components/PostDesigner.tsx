@@ -414,14 +414,14 @@ const PostContent = ({
                             position: 'absolute',
                             top: '40px',
                             right: '60px',
-                            color: 'white',
-                            fontSize: '120px',
-                            fontWeight: 900,
-                            fontFamily: 'serif',
-                            lineHeight: 1,
                             opacity: 0.9
                         }}>
-                            ”
+                            <img
+                                src="/quote-icon.png"
+                                alt="Quote"
+                                style={{ height: '100px', width: 'auto', display: 'block' }}
+                                crossOrigin="anonymous"
+                            />
                         </div>
 
                         {/* Centered Text */}
