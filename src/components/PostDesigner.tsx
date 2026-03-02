@@ -834,6 +834,7 @@ export default function PostDesigner() {
                                 showBreakingNews={showBreakingNews}
                                 fontWeight={fontWeight}
                                 letterSpacing={letterSpacing}
+                                subtitle={subtitle}
                             />
                         </div>
                     </div>
