@@ -148,7 +148,7 @@ const PostContent = ({
                                 padding: '16px 28px 20px 28px', // Significantly increased for bolder, spacious look
                                 borderRadius: '2px',
                                 fontSize: `${fontSize * 0.75}px`,
-                                fontWeight: 600,
+                                fontWeight: 800,
                                 fontFamily: 'var(--font-sindhi)',
                                 marginBottom: '14px', // Increased space between label and title
                                 display: 'inline-block',
