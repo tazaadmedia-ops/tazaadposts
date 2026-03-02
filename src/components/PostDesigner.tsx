@@ -691,6 +691,7 @@ export default function PostDesigner() {
                                     <input type="range" min="0" max="100" value={gradientCoverage} onChange={e => setGradientCoverage(parseInt(e.target.value))} />
                                 </div>
                             </section>
+                        )}
                     </div>
 
                     <div style={{ padding: '24px', borderTop: '1px solid var(--border-subtle)' }}>
