@@ -161,7 +161,7 @@ const PostContent = ({
                                 WebkitFontSmoothing: 'antialiased',
                                 fontFeatureSettings: '"kern" 1, "liga" 1, "clig" 1, "calt" 1',
                                 fontVariantLigatures: 'contextual',
-                                letterSpacing: `${letterSpacing}em`,
+                                letterSpacing: '0',
                                 wordSpacing: 'normal',
                                 whiteSpace: 'nowrap'
                             }}
@@ -178,7 +178,7 @@ const PostContent = ({
                             lineHeight: lineHeight,
                             textAlign: textAlign,
                             fontWeight: fontWeight,
-                            letterSpacing: `${letterSpacing}em`,
+                            letterSpacing: '0',
                             width: '100%',
                             textRendering: 'optimizeLegibility',
                             WebkitFontSmoothing: 'antialiased',
@@ -201,7 +201,7 @@ const PostContent = ({
                                 lineHeight: 1.2,
                                 textAlign: textAlign,
                                 fontWeight: 500,
-                                letterSpacing: `${letterSpacing}em`,
+                                letterSpacing: '0',
                                 width: '100%',
                                 marginTop: '10px',
                                 textRendering: 'optimizeLegibility',
@@ -250,7 +250,7 @@ export default function PostDesigner() {
     const [bottomBarHeight, setBottomBarHeight] = useState(18);
     const [showBreakingNews, setShowBreakingNews] = useState(false);
     const [fontWeight, setFontWeight] = useState(700);
-    const [letterSpacing, setLetterSpacing] = useState(-0.02);
+    const [letterSpacing, setLetterSpacing] = useState(0);
     const [scale, setScale] = useState(1);
     const [isExporting, setIsExporting] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
@@ -733,14 +733,6 @@ export default function PostDesigner() {
                                     </div>
                                 </div>
 
-                                {/* Spacing (Kerning) */}
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                        <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Letter Spacing</label>
-                                        <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{letterSpacing}em</span>
-                                    </div>
-                                    <input type="range" min="-0.15" max="0.15" step="0.01" value={letterSpacing} onChange={e => setLetterSpacing(parseFloat(e.target.value))} />
-                                </div>
 
                                 {/* Alignment */}
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>

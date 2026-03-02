@@ -79,6 +79,8 @@ body {
 .lateef-bold {
     font-family: var(--font-sindhi);
     font-weight: 700;
+    letter-spacing: 0 !important;
+    text-rendering: optimizeLegibility;
 }
 
 .premium-shadow {
