@@ -130,9 +130,9 @@ const PostContent = ({
                     paddingBottom: `${((100 - textY) / 100) * (POST_HEIGHT - 160) + bottomBarHeight + 40}px`,
                     background: `linear-gradient(to bottom, 
                             transparent 0%, 
-                            rgba(0,0,0,0) ${Math.max(0, textY - gradientCoverage * 0.4)}%, 
-                            rgba(0,0,10,${0.85 * (gradientCoverage / 100)}) ${textY - 10}%, 
-                            rgba(0,0,20,1.0) 100%)`
+                            rgba(0,0,0,0) ${100 - gradientCoverage}%, 
+                            rgba(0,1,10,${0.9 * (gradientCoverage / 100)}) ${Math.max(0, 100 - gradientCoverage * 0.4)}%, 
+                            rgba(0,2,20,1.0) 100%)`
                 }}
             >
                 <div style={{
@@ -640,6 +640,15 @@ export default function PostDesigner() {
                                     <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{textY}%</span>
                                 </div>
                                 <input type="range" min="10" max="98" value={textY} onChange={e => setTextY(parseInt(e.target.value))} />
+                            </div>
+
+                            {/* Gradient Coverage */}
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Gradient Coverage</label>
+                                    <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{gradientCoverage}%</span>
+                                </div>
+                                <input type="range" min="0" max="100" value={gradientCoverage} onChange={e => setGradientCoverage(parseInt(e.target.value))} />
                             </div>
                         </section>
                     </div>
