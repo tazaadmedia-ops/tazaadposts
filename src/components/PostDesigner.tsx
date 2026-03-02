@@ -36,7 +36,8 @@ const PostContent = ({
     textAlign,
     showBreakingNews,
     fontWeight,
-    letterSpacing
+    letterSpacing,
+    subtitle
 }: any) => {
     const renderText = () => {
         if (!highlightText.trim() || !text.includes(highlightText)) {
@@ -124,10 +125,10 @@ const PostContent = ({
                     justifyContent: 'flex-end',
                     paddingBottom: `${((100 - textY) / 100) * (POST_HEIGHT - 160) + bottomBarHeight + 40}px`,
                     background: `linear-gradient(to bottom, 
-                            transparent 0%, 
+                            rgba(0,0,0,0) 0%, 
                             rgba(0,0,0,0) ${100 - gradientCoverage}%, 
-                            rgba(0,1,10,${0.9 * (gradientCoverage / 100)}) ${Math.max(0, 100 - gradientCoverage * 0.4)}%, 
-                            rgba(0,2,20,1.0) 100%)`
+                            rgba(0,0,0,${0.9 * (gradientCoverage / 100)}) ${Math.max(0, 100 - gradientCoverage * 0.4)}%, 
+                            rgba(0,0,0,1.0) 100%)`
                 }}
             >
                 <div style={{
@@ -144,14 +145,14 @@ const PostContent = ({
                             style={{
                                 backgroundColor: 'var(--accent-red)',
                                 color: 'white',
-                                padding: '3px 18px', // Minimal and balanced
+                                padding: '3px 18px 6px 18px', // Increased bottom padding to prevent cut
                                 borderRadius: '2px',
                                 fontSize: `${fontSize * 0.75}px`,
                                 fontWeight: 600,
                                 fontFamily: 'var(--font-sindhi)',
-                                marginBottom: '8px',
+                                marginBottom: '14px', // Increased space between label and title
                                 display: 'inline-block',
-                                lineHeight: 1.2,
+                                lineHeight: 1,
                                 textRendering: 'optimizeLegibility',
                                 WebkitFontSmoothing: 'antialiased',
                                 fontFeatureSettings: '"kern" 1, "liga" 1, "clig" 1, "calt" 1',
@@ -186,6 +187,27 @@ const PostContent = ({
                     >
                         {renderText()}
                     </div>
+                    {subtitle && (
+                        <div
+                            dir="rtl"
+                            className="lateef-bold"
+                            style={{
+                                color: 'rgba(255,255,255,0.95)',
+                                fontSize: `${fontSize * 0.55}px`, // Subtitle is approx 55% of title size
+                                lineHeight: 1.2,
+                                textAlign: textAlign,
+                                fontWeight: 500,
+                                letterSpacing: `${letterSpacing}em`,
+                                width: '100%',
+                                marginTop: '10px',
+                                textRendering: 'optimizeLegibility',
+                                WebkitFontSmoothing: 'antialiased',
+                                opacity: 0.9
+                            }}
+                        >
+                            {subtitle}
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -209,6 +231,7 @@ export default function PostDesigner() {
     // --- State ---
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [text, setText] = useState("");
+    const [subtitle, setSubtitle] = useState("");
     const [highlightText, setHighlightText] = useState("");
     const [logoUrl, setLogoUrl] = useState("/TazaadLogo-01.png");
     const [bgColor, setBgColor] = useState("#0f172a");
@@ -610,6 +633,42 @@ export default function PostDesigner() {
                                         }}
                                     />
                                 </div>
+
+                                <div style={{ position: 'relative' }}>
+                                    <textarea
+                                        value={subtitle}
+                                        onChange={e => setSubtitle(e.target.value.slice(0, 100))}
+                                        dir="rtl"
+                                        placeholder="ذيلي عنوان (Subtitle)..."
+                                        className="lateef-bold"
+                                        maxLength={100}
+                                        style={{
+                                            width: '100%',
+                                            height: '80px',
+                                            backgroundColor: 'var(--bg-card)',
+                                            border: '1px solid var(--border-subtle)',
+                                            borderRadius: '16px',
+                                            padding: '12px',
+                                            color: 'rgba(255,255,255,0.8)',
+                                            fontSize: '16px',
+                                            resize: 'none',
+                                            outline: 'none'
+                                        }}
+                                    />
+                                    <div style={{
+                                        position: 'absolute',
+                                        bottom: '8px',
+                                        left: '12px',
+                                        fontSize: '9px',
+                                        fontWeight: 700,
+                                        color: 'var(--text-muted)',
+                                        backgroundColor: 'rgba(0,0,0,0.2)',
+                                        padding: '1px 6px',
+                                        borderRadius: '4px'
+                                    }}>
+                                        {subtitle.length}/100
+                                    </div>
+                                </div>
                             </section>
                         )}
 
@@ -815,6 +874,7 @@ export default function PostDesigner() {
                         showBreakingNews={showBreakingNews}
                         fontWeight={fontWeight}
                         letterSpacing={letterSpacing}
+                        subtitle={subtitle}
                     />
                 </div>
             </div>
