@@ -156,7 +156,7 @@ const PostContent = ({
                                 WebkitFontSmoothing: 'antialiased',
                                 fontFeatureSettings: '"kern" 1, "liga" 1, "clig" 1, "calt" 1',
                                 fontVariantLigatures: 'contextual',
-                                letterSpacing: 'normal', // Forced normal to preserve ligatures
+                                letterSpacing: `${letterSpacing}em`,
                                 wordSpacing: 'normal',
                                 whiteSpace: 'nowrap'
                             }}
@@ -173,7 +173,7 @@ const PostContent = ({
                             lineHeight: lineHeight,
                             textAlign: textAlign,
                             fontWeight: fontWeight,
-                            letterSpacing: 'normal', // Forced normal to preserve ligatures
+                            letterSpacing: `${letterSpacing}em`,
                             width: '100%',
                             textRendering: 'optimizeLegibility',
                             WebkitFontSmoothing: 'antialiased',
@@ -226,6 +226,7 @@ export default function PostDesigner() {
     const [scale, setScale] = useState(1);
     const [isExporting, setIsExporting] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
+    const [activeTab, setActiveTab] = useState('visuals'); // 'visuals', 'branding', 'narrative', 'adjustments'
 
     useEffect(() => {
         const handleResize = () => {
@@ -359,7 +360,8 @@ export default function PostDesigner() {
                 display: 'flex',
                 flexDirection: isMobile ? 'column' : 'row',
                 height: isMobile ? 'auto' : 'calc(100vh - 72px)',
-                overflow: isMobile ? 'visible' : 'hidden'
+                overflow: isMobile ? 'visible' : 'hidden',
+                position: 'relative'
             }}>
                 {/* Sidebar Controls - On top in mobile */}
                 <aside style={{
@@ -371,278 +373,324 @@ export default function PostDesigner() {
                     flexDirection: 'column',
                     zIndex: 50,
                     overflowY: isMobile ? 'visible' : 'auto',
-                    order: isMobile ? 1 : 0
+                    order: isMobile ? 2 : 1,
+                    minHeight: isMobile ? '400px' : 'auto'
                 }}>
-                    <div style={{ flex: 1, overflowY: isMobile ? 'visible' : 'auto', padding: isMobile ? '16px' : '24px', display: 'flex', flexDirection: 'column', gap: '32px' }}>
+                    {/* Mobile Tab Navigation */}
+                    {isMobile && (
+                        <div style={{
+                            display: 'flex',
+                            overflowX: 'auto',
+                            borderBottom: '1px solid var(--border-subtle)',
+                            backgroundColor: 'rgba(255,255,255,0.02)',
+                            scrollbarWidth: 'none'
+                        }}>
+                            {[
+                                { id: 'visuals', icon: <ImageIcon size={14} />, label: 'Visuals' },
+                                { id: 'branding', icon: <Palette size={14} />, label: 'Branding' },
+                                { id: 'narrative', icon: <Type size={14} />, label: 'Text' },
+                                { id: 'adjustments', icon: <Maximize2 size={14} />, label: 'Layout' }
+                            ].map(tab => (
+                                <button
+                                    key={tab.id}
+                                    onClick={() => setActiveTab(tab.id)}
+                                    style={{
+                                        flex: 1,
+                                        padding: '14px 10px',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        gap: '6px',
+                                        backgroundColor: activeTab === tab.id ? 'var(--accent-red)' : 'transparent',
+                                        color: activeTab === tab.id ? 'white' : 'var(--text-muted)',
+                                        border: 'none',
+                                        minWidth: '85px',
+                                        transition: 'all 0.2s'
+                                    }}
+                                >
+                                    {tab.icon}
+                                    <span style={{ fontSize: '9px', fontWeight: 800, textTransform: 'uppercase' }}>{tab.label}</span>
+                                </button>
+                            ))}
+                        </div>
+                    )}
 
-                        {/* Visuals Section */}
-                        <section style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                <span style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--text-muted)' }}>Visuals</span>
-                                <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--border-subtle)' }} />
-                            </div>
+                    <div style={{ flex: 1, overflowY: isMobile ? 'visible' : 'auto', padding: isMobile ? '20px' : '24px', display: 'flex', flexDirection: 'column', gap: '32px' }}>
 
-                            <div
-                                onClick={() => fileInputRef.current?.click()}
-                                className="glass"
-                                style={{
-                                    height: '110px',
-                                    borderRadius: '20px',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    gap: '8px',
-                                    cursor: 'pointer',
-                                    position: 'relative',
-                                    overflow: 'hidden'
-                                }}
-                            >
-                                <input ref={fileInputRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleImageUpload} />
-                                {imageUrl ? (
-                                    <>
-                                        <img src={imageUrl} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.3 }} />
-                                        <div style={{ position: 'relative', zIndex: 1, fontSize: '10px', fontWeight: 800, color: 'white', backgroundColor: 'rgba(0,0,0,0.5)', padding: '4px 12px', borderRadius: '6px' }}>Change Texture</div>
-                                    </>
-                                ) : (
-                                    <>
-                                        <ImageIcon size={20} color="var(--text-muted)" />
-                                        <span style={{ fontSize: '10px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Upload Image</span>
-                                    </>
-                                )}
-                            </div>
+                        {(!isMobile || activeTab === 'visuals') && (
+                            <section style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <span style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--text-muted)' }}>Visuals</span>
+                                    <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--border-subtle)' }} />
+                                </div>
 
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                    <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Background</label>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px', backgroundColor: 'var(--bg-card)', borderRadius: '12px', border: '1px solid var(--border-subtle)' }}>
-                                        <input type="color" value={bgColor} onChange={e => setBgColor(e.target.value)} style={{ width: '24px', height: '24px', borderRadius: '4px', border: 'none', backgroundColor: 'transparent', cursor: 'pointer' }} />
-                                        <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{bgColor.toUpperCase()}</span>
+                                <div
+                                    onClick={() => fileInputRef.current?.click()}
+                                    className="glass"
+                                    style={{
+                                        height: '110px',
+                                        borderRadius: '20px',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        gap: '8px',
+                                        cursor: 'pointer',
+                                        position: 'relative',
+                                        overflow: 'hidden'
+                                    }}
+                                >
+                                    <input ref={fileInputRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleImageUpload} />
+                                    {imageUrl ? (
+                                        <>
+                                            <img src={imageUrl} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.3 }} />
+                                            <div style={{ position: 'relative', zIndex: 1, fontSize: '10px', fontWeight: 800, color: 'white', backgroundColor: 'rgba(0,0,0,0.5)', padding: '4px 12px', borderRadius: '6px' }}>Change Texture</div>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <ImageIcon size={20} color="var(--text-muted)" />
+                                            <span style={{ fontSize: '10px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Upload Image</span>
+                                        </>
+                                    )}
+                                </div>
+
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                        <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Background</label>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px', backgroundColor: 'var(--bg-card)', borderRadius: '12px', border: '1px solid var(--border-subtle)' }}>
+                                            <input type="color" value={bgColor} onChange={e => setBgColor(e.target.value)} style={{ width: '24px', height: '24px', borderRadius: '4px', border: 'none', backgroundColor: 'transparent', cursor: 'pointer' }} />
+                                            <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{bgColor.toUpperCase()}</span>
+                                        </div>
+                                    </div>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                        <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Highlight</label>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px', backgroundColor: 'var(--bg-card)', borderRadius: '12px', border: '1px solid var(--border-subtle)' }}>
+                                            <input type="color" value={highlightColor} onChange={e => setHighlightColor(e.target.value)} style={{ width: '24px', height: '24px', borderRadius: '4px', border: 'none', backgroundColor: 'transparent', cursor: 'pointer' }} />
+                                            <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{highlightColor.toUpperCase()}</span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                    <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Highlight</label>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px', backgroundColor: 'var(--bg-card)', borderRadius: '12px', border: '1px solid var(--border-subtle)' }}>
-                                        <input type="color" value={highlightColor} onChange={e => setHighlightColor(e.target.value)} style={{ width: '24px', height: '24px', borderRadius: '4px', border: 'none', backgroundColor: 'transparent', cursor: 'pointer' }} />
-                                        <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{highlightColor.toUpperCase()}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
+                            </section>
+                        )}
 
                         {/* Branding Section */}
-                        <section style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                <span style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--text-muted)' }}>Branding</span>
-                                <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--border-subtle)' }} />
-                            </div>
-
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', padding: '4px', backgroundColor: 'var(--bg-card)', borderRadius: '14px' }}>
-                                <button
-                                    onClick={() => setLogoUrl('/TazaadLogo-01.png')}
-                                    style={{
-                                        padding: '10px',
-                                        borderRadius: '10px',
-                                        backgroundColor: logoUrl === '/TazaadLogo-01.png' ? 'var(--accent-red)' : 'transparent',
-                                        color: 'white',
-                                        fontSize: '11px',
-                                        fontWeight: 800
-                                    }}
-                                >
-                                    Logo 01
-                                </button>
-                                <button
-                                    onClick={() => setLogoUrl('/TazaadLogo-02.png')}
-                                    style={{
-                                        padding: '10px',
-                                        borderRadius: '10px',
-                                        backgroundColor: logoUrl === '/TazaadLogo-02.png' ? 'var(--accent-red)' : 'transparent',
-                                        color: 'white',
-                                        fontSize: '11px',
-                                        fontWeight: 800
-                                    }}
-                                >
-                                    Logo 02
-                                </button>
-                            </div>
-
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Logo Size</label>
-                                    <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{logoSize}px</span>
+                        {(!isMobile || activeTab === 'branding') && (
+                            <section style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <span style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--text-muted)' }}>Branding</span>
+                                    <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--border-subtle)' }} />
                                 </div>
-                                <input type="range" min="30" max="250" value={logoSize} onChange={e => setLogoSize(parseInt(e.target.value))} />
-                            </div>
-                        </section>
+
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', padding: '4px', backgroundColor: 'var(--bg-card)', borderRadius: '14px' }}>
+                                    <button
+                                        onClick={() => setLogoUrl('/TazaadLogo-01.png')}
+                                        style={{
+                                            padding: '10px',
+                                            borderRadius: '10px',
+                                            backgroundColor: logoUrl === '/TazaadLogo-01.png' ? 'var(--accent-red)' : 'transparent',
+                                            color: 'white',
+                                            fontSize: '11px',
+                                            fontWeight: 800
+                                        }}
+                                    >
+                                        Logo 01
+                                    </button>
+                                    <button
+                                        onClick={() => setLogoUrl('/TazaadLogo-02.png')}
+                                        style={{
+                                            padding: '10px',
+                                            borderRadius: '10px',
+                                            backgroundColor: logoUrl === '/TazaadLogo-02.png' ? 'var(--accent-red)' : 'transparent',
+                                            color: 'white',
+                                            fontSize: '11px',
+                                            fontWeight: 800
+                                        }}
+                                    >
+                                        Logo 02
+                                    </button>
+                                </div>
+
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                        <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Logo Size</label>
+                                        <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{logoSize}px</span>
+                                    </div>
+                                    <input type="range" min="30" max="250" value={logoSize} onChange={e => setLogoSize(parseInt(e.target.value))} />
+                                </div>
+                            </section>
+                        )}
 
                         {/* Narrative Section */}
-                        <section style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                <span style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--text-muted)' }}>Narrative</span>
-                                <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--border-subtle)' }} />
-                            </div>
-
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px', backgroundColor: 'var(--bg-card)', borderRadius: '12px', border: '1px solid var(--border-subtle)' }}>
-                                <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-primary)' }}>Breaking News Label</span>
-                                <button
-                                    onClick={() => {
-                                        setShowBreakingNews(!showBreakingNews);
-                                        if (!showBreakingNews) {
-                                            setTextAlign('right');
-                                        }
-                                    }}
-                                    style={{
-                                        padding: '6px 16px',
-                                        borderRadius: '20px',
-                                        backgroundColor: showBreakingNews ? 'var(--accent-red)' : 'var(--bg-app)',
-                                        color: showBreakingNews ? 'white' : 'var(--text-secondary)',
-                                        border: '1px solid ' + (showBreakingNews ? 'var(--accent-red)' : 'var(--border-subtle)'),
-                                        fontSize: '11px',
-                                        fontWeight: 800,
-                                        cursor: 'pointer',
-                                        transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
-                                    }}
-                                >
-                                    {showBreakingNews ? 'ON' : 'OFF'}
-                                </button>
-                            </div>
-
-                            <div style={{ position: 'relative' }}>
-                                <textarea
-                                    value={text}
-                                    onChange={e => setText(e.target.value.slice(0, 100))}
-                                    dir="rtl"
-                                    placeholder="توهان جي لکڻ هتي..."
-                                    className="lateef-bold"
-                                    maxLength={100}
-                                    style={{
-                                        width: '100%',
-                                        height: '140px',
-                                        backgroundColor: 'var(--bg-card)',
-                                        border: '1px solid var(--border-subtle)',
-                                        borderRadius: '20px',
-                                        padding: '16px 16px 40px 16px',
-                                        color: 'white',
-                                        fontSize: '20px',
-                                        resize: 'none',
-                                        outline: 'none'
-                                    }}
-                                />
-                                <div style={{
-                                    position: 'absolute',
-                                    bottom: '12px',
-                                    left: '16px',
-                                    fontSize: '10px',
-                                    fontWeight: 700,
-                                    color: text.length >= 100 ? 'var(--accent-red)' : 'var(--text-muted)',
-                                    backgroundColor: 'rgba(0,0,0,0.3)',
-                                    padding: '2px 8px',
-                                    borderRadius: '4px'
-                                }}>
-                                    {text.length}/100
+                        {(!isMobile || activeTab === 'narrative') && (
+                            <section style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <span style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--text-muted)' }}>Narrative</span>
+                                    <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--border-subtle)' }} />
                                 </div>
-                            </div>
 
-                            <div style={{ position: 'relative' }}>
-                                <Type size={14} color="var(--text-muted)" style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)' }} />
-                                <input
-                                    type="text"
-                                    value={highlightText}
-                                    onChange={e => setHighlightText(e.target.value)}
-                                    dir="rtl"
-                                    placeholder="لفظ نمايان ڪريو"
-                                    className="lateef-bold"
-                                    style={{
-                                        width: '100%',
-                                        backgroundColor: 'var(--bg-card)',
-                                        border: '1px solid var(--border-subtle)',
-                                        borderRadius: '12px',
-                                        padding: '10px 40px 10px 12px',
-                                        color: 'white',
-                                        fontSize: '16px',
-                                        outline: 'none'
-                                    }}
-                                />
-                            </div>
-                        </section>
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px', backgroundColor: 'var(--bg-card)', borderRadius: '12px', border: '1px solid var(--border-subtle)' }}>
+                                    <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-primary)' }}>Breaking News Label</span>
+                                    <button
+                                        onClick={() => {
+                                            setShowBreakingNews(!showBreakingNews);
+                                            if (!showBreakingNews) {
+                                                setTextAlign('right');
+                                            }
+                                        }}
+                                        style={{
+                                            padding: '6px 16px',
+                                            borderRadius: '20px',
+                                            backgroundColor: showBreakingNews ? 'var(--accent-red)' : 'var(--bg-app)',
+                                            color: showBreakingNews ? 'white' : 'var(--text-secondary)',
+                                            border: '1px solid ' + (showBreakingNews ? 'var(--accent-red)' : 'var(--border-subtle)'),
+                                            fontSize: '11px',
+                                            fontWeight: 800,
+                                            cursor: 'pointer',
+                                            transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+                                        }}
+                                    >
+                                        {showBreakingNews ? 'ON' : 'OFF'}
+                                    </button>
+                                </div>
+
+                                <div style={{ position: 'relative' }}>
+                                    <textarea
+                                        value={text}
+                                        onChange={e => setText(e.target.value.slice(0, 100))}
+                                        dir="rtl"
+                                        placeholder="توهان جي لکڻ هتي..."
+                                        className="lateef-bold"
+                                        maxLength={100}
+                                        style={{
+                                            width: '100%',
+                                            height: '140px',
+                                            backgroundColor: 'var(--bg-card)',
+                                            border: '1px solid var(--border-subtle)',
+                                            borderRadius: '20px',
+                                            padding: '16px 16px 40px 16px',
+                                            color: 'white',
+                                            fontSize: '20px',
+                                            resize: 'none',
+                                            outline: 'none'
+                                        }}
+                                    />
+                                    <div style={{
+                                        position: 'absolute',
+                                        bottom: '12px',
+                                        left: '16px',
+                                        fontSize: '10px',
+                                        fontWeight: 700,
+                                        color: text.length >= 100 ? 'var(--accent-red)' : 'var(--text-muted)',
+                                        backgroundColor: 'rgba(0,0,0,0.3)',
+                                        padding: '2px 8px',
+                                        borderRadius: '4px'
+                                    }}>
+                                        {text.length}/100
+                                    </div>
+                                </div>
+
+                                <div style={{ position: 'relative' }}>
+                                    <Type size={14} color="var(--text-muted)" style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)' }} />
+                                    <input
+                                        type="text"
+                                        value={highlightText}
+                                        onChange={e => setHighlightText(e.target.value)}
+                                        dir="rtl"
+                                        placeholder="لفظ نمايان ڪريو"
+                                        className="lateef-bold"
+                                        style={{
+                                            width: '100%',
+                                            backgroundColor: 'var(--bg-card)',
+                                            border: '1px solid var(--border-subtle)',
+                                            borderRadius: '12px',
+                                            padding: '10px 40px 10px 12px',
+                                            color: 'white',
+                                            fontSize: '16px',
+                                            outline: 'none'
+                                        }}
+                                    />
+                                </div>
+                            </section>
+                        )}
 
                         {/* Adjustments Section */}
-                        <section style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                <span style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--text-muted)' }}>Adjustments</span>
-                                <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--border-subtle)' }} />
-                            </div>
-
-                            {/* Text Size */}
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Font Size</label>
-                                    <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{fontSize}px</span>
+                        {(!isMobile || activeTab === 'adjustments') && (
+                            <section style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <span style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--text-muted)' }}>Adjustments</span>
+                                    <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--border-subtle)' }} />
                                 </div>
-                                <input type="range" min="40" max="180" value={fontSize} onChange={e => setFontSize(parseInt(e.target.value))} />
-                            </div>
 
-                            {/* Font Weight */}
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Font Weight</label>
-                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                                    {[400, 500, 600, 700, 800, 900].map(weight => (
-                                        <button
-                                            key={weight}
-                                            onClick={() => setFontWeight(weight)}
-                                            style={{
-                                                padding: '6px 10px',
-                                                borderRadius: '8px',
-                                                backgroundColor: fontWeight === weight ? 'var(--accent-red)' : 'var(--bg-card)',
-                                                color: 'white',
-                                                fontSize: '10px',
-                                                fontWeight: weight,
-                                                border: '1px solid ' + (fontWeight === weight ? 'var(--accent-red)' : 'var(--border-subtle)')
-                                            }}
-                                        >
-                                            {weight === 400 ? 'Reg' : weight === 500 ? 'Med' : weight === 600 ? 'Semi' : weight === 700 ? 'Bold' : weight === 800 ? 'Ext' : 'Blk'}
-                                        </button>
-                                    ))}
+                                {/* Text Size */}
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                        <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Font Size</label>
+                                        <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{fontSize}px</span>
+                                    </div>
+                                    <input type="range" min="40" max="180" value={fontSize} onChange={e => setFontSize(parseInt(e.target.value))} />
                                 </div>
-                            </div>
 
-                            {/* Spacing (Kerning) */}
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Letter Spacing</label>
-                                    <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{letterSpacing}em</span>
+                                {/* Font Weight */}
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                    <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Font Weight</label>
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                                        {[400, 500, 600, 700, 800, 900].map(weight => (
+                                            <button
+                                                key={weight}
+                                                onClick={() => setFontWeight(weight)}
+                                                style={{
+                                                    padding: '6px 10px',
+                                                    borderRadius: '8px',
+                                                    backgroundColor: fontWeight === weight ? 'var(--accent-red)' : 'var(--bg-card)',
+                                                    color: 'white',
+                                                    fontSize: '10px',
+                                                    fontWeight: weight,
+                                                    border: '1px solid ' + (fontWeight === weight ? 'var(--accent-red)' : 'var(--border-subtle)')
+                                                }}
+                                            >
+                                                {weight === 400 ? 'Reg' : weight === 500 ? 'Med' : weight === 600 ? 'Semi' : weight === 700 ? 'Bold' : weight === 800 ? 'Ext' : 'Blk'}
+                                            </button>
+                                        ))}
+                                    </div>
                                 </div>
-                                <input type="range" min="-0.15" max="0.15" step="0.01" value={letterSpacing} onChange={e => setLetterSpacing(parseFloat(e.target.value))} />
-                            </div>
 
-                            {/* Alignment */}
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Alignment</label>
-                                <div style={{ display: 'flex', gap: '4px', padding: '4px', backgroundColor: 'var(--bg-card)', borderRadius: '12px' }}>
-                                    <button onClick={() => setTextAlign('right')} style={{ flex: 1, padding: '8px', borderRadius: '8px', backgroundColor: textAlign === 'right' ? 'var(--accent-red)' : 'transparent', color: 'white' }}><AlignRight size={16} /></button>
-                                    <button onClick={() => setTextAlign('center')} style={{ flex: 1, padding: '8px', borderRadius: '8px', backgroundColor: textAlign === 'center' ? 'var(--accent-red)' : 'transparent', color: 'white' }}><AlignCenter size={16} /></button>
-                                    <button onClick={() => setTextAlign('left')} style={{ flex: 1, padding: '8px', borderRadius: '8px', backgroundColor: textAlign === 'left' ? 'var(--accent-red)' : 'transparent', color: 'white' }}><AlignLeft size={16} /></button>
+                                {/* Spacing (Kerning) */}
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                        <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Letter Spacing</label>
+                                        <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{letterSpacing}em</span>
+                                    </div>
+                                    <input type="range" min="-0.15" max="0.15" step="0.01" value={letterSpacing} onChange={e => setLetterSpacing(parseFloat(e.target.value))} />
                                 </div>
-                            </div>
 
-                            {/* Vertical Position */}
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Vertical Pos</label>
-                                    <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{textY}%</span>
+                                {/* Alignment */}
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                    <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Alignment</label>
+                                    <div style={{ display: 'flex', gap: '4px', padding: '4px', backgroundColor: 'var(--bg-card)', borderRadius: '12px' }}>
+                                        <button onClick={() => setTextAlign('right')} style={{ flex: 1, padding: '8px', borderRadius: '8px', backgroundColor: textAlign === 'right' ? 'var(--accent-red)' : 'transparent', color: 'white' }}><AlignRight size={16} /></button>
+                                        <button onClick={() => setTextAlign('center')} style={{ flex: 1, padding: '8px', borderRadius: '8px', backgroundColor: textAlign === 'center' ? 'var(--accent-red)' : 'transparent', color: 'white' }}><AlignCenter size={16} /></button>
+                                        <button onClick={() => setTextAlign('left')} style={{ flex: 1, padding: '8px', borderRadius: '8px', backgroundColor: textAlign === 'left' ? 'var(--accent-red)' : 'transparent', color: 'white' }}><AlignLeft size={16} /></button>
+                                    </div>
                                 </div>
-                                <input type="range" min="10" max="98" value={textY} onChange={e => setTextY(parseInt(e.target.value))} />
-                            </div>
 
-                            {/* Gradient Coverage */}
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Gradient Coverage</label>
-                                    <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{gradientCoverage}%</span>
+                                {/* Vertical Position */}
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                        <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Vertical Pos</label>
+                                        <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{textY}%</span>
+                                    </div>
+                                    <input type="range" min="10" max="98" value={textY} onChange={e => setTextY(parseInt(e.target.value))} />
                                 </div>
-                                <input type="range" min="0" max="100" value={gradientCoverage} onChange={e => setGradientCoverage(parseInt(e.target.value))} />
-                            </div>
-                        </section>
+
+                                {/* Gradient Coverage */}
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                        <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Gradient Coverage</label>
+                                        <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{gradientCoverage}%</span>
+                                    </div>
+                                    <input type="range" min="0" max="100" value={gradientCoverage} onChange={e => setGradientCoverage(parseInt(e.target.value))} />
+                                </div>
+                            </section>
                     </div>
 
                     <div style={{ padding: '24px', borderTop: '1px solid var(--border-subtle)' }}>
@@ -671,17 +719,20 @@ export default function PostDesigner() {
                     </div>
                 </aside>
 
-                {/* Live Preview Area - Below inputs on mobile */}
+                {/* Live Preview Area - On top in mobile (order changed) */}
                 <main ref={containerRef} style={{
                     flex: 1,
-                    position: 'relative',
+                    position: isMobile ? 'sticky' : 'relative',
+                    top: isMobile ? '56px' : 0,
+                    zIndex: 40,
                     display: 'grid',
                     placeItems: 'center',
                     padding: isMobile ? '12px' : '40px',
                     backgroundColor: 'var(--bg-main)',
                     overflow: 'hidden',
-                    order: isMobile ? 2 : 0,
-                    minHeight: isMobile ? '480px' : 'auto'
+                    order: isMobile ? 1 : 2,
+                    minHeight: isMobile ? '400px' : 'auto',
+                    borderBottom: isMobile ? '1px solid var(--border-subtle)' : 'none'
                 }}>
                     {/* Subtle Grid */}
                     <div style={{
