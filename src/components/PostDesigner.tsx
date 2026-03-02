@@ -1,4 +1,4 @@
-import React, { useState, useRef, useLayoutEffect } from 'react';
+import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
 import html2canvas from 'html2canvas';
 import {
     Upload,
@@ -233,6 +233,16 @@ export default function PostDesigner() {
     const [letterSpacing, setLetterSpacing] = useState(-0.02);
     const [scale, setScale] = useState(1);
     const [isExporting, setIsExporting] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 1024);
+        };
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     // --- Refs ---
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -352,17 +362,26 @@ export default function PostDesigner() {
                 </button>
             </header>
 
-            <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
-                {/* Sidebar Controls */}
+            <div style={{
+                flex: 1,
+                display: 'flex',
+                flexDirection: isMobile ? 'column' : 'row',
+                height: isMobile ? 'auto' : 'calc(100vh - 72px)',
+                overflow: isMobile ? 'visible' : 'hidden'
+            }}>
+                {/* Sidebar Controls - On top in mobile */}
                 <aside style={{
-                    width: '340px',
+                    width: isMobile ? '100%' : '340px',
                     backgroundColor: 'var(--bg-panel)',
-                    borderRight: '1px solid var(--border-subtle)',
+                    borderRight: isMobile ? 'none' : '1px solid var(--border-subtle)',
+                    borderBottom: isMobile ? '1px solid var(--border-subtle)' : 'none',
                     display: 'flex',
                     flexDirection: 'column',
-                    zIndex: 50
+                    zIndex: 50,
+                    overflowY: isMobile ? 'visible' : 'auto',
+                    order: isMobile ? 1 : 0
                 }}>
-                    <div style={{ flex: 1, overflowY: 'auto', padding: '24px', display: 'flex', flexDirection: 'column', gap: '32px' }}>
+                    <div style={{ flex: 1, overflowY: isMobile ? 'visible' : 'auto', padding: '24px', display: 'flex', flexDirection: 'column', gap: '32px' }}>
 
                         {/* Visuals Section */}
                         <section style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -636,7 +655,17 @@ export default function PostDesigner() {
                 </aside>
 
                 {/* Live Preview Area */}
-                <main ref={containerRef} style={{ flex: 1, position: 'relative', display: 'grid', placeItems: 'center', padding: '40px', backgroundColor: 'var(--bg-main)', overflow: 'hidden' }}>
+                <main ref={containerRef} style={{
+                    flex: 1,
+                    position: 'relative',
+                    display: 'grid',
+                    placeItems: 'center',
+                    padding: isMobile ? '24px' : '40px',
+                    backgroundColor: 'var(--bg-main)',
+                    overflow: 'hidden',
+                    order: isMobile ? 2 : 0,
+                    minHeight: isMobile ? '600px' : 'auto'
+                }}>
                     {/* Subtle Grid */}
                     <div style={{
                         position: 'absolute',
