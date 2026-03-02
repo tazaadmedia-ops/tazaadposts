@@ -40,7 +40,8 @@ const PostContent = ({
     showBreakingNews,
     fontWeight,
     letterSpacing,
-    subtitle
+    subtitle,
+    subtitleFontSize
 }: any) => {
     const renderText = () => {
         if (!highlightText.trim() || !text.includes(highlightText)) {
@@ -196,7 +197,7 @@ const PostContent = ({
                             className="lateef-bold"
                             style={{
                                 color: 'rgba(255,255,255,0.95)',
-                                fontSize: `${fontSize * 0.55}px`, // Subtitle is approx 55% of title size
+                                fontSize: `${subtitleFontSize}px`,
                                 lineHeight: 1.2,
                                 textAlign: textAlign,
                                 fontWeight: 500,
@@ -240,6 +241,7 @@ export default function PostDesigner() {
     const [bgColor, setBgColor] = useState("#0f172a");
     const [highlightColor, setHighlightColor] = useState("#facc15");
     const [fontSize, setFontSize] = useState(82);
+    const [subtitleFontSize, setSubtitleFontSize] = useState(40);
     const [lineHeight, setLineHeight] = useState(1.1);
     const [textY, setTextY] = useState(85);
     const [textAlign, setTextAlign] = useState<'left' | 'center' | 'right'>('center');
@@ -253,11 +255,17 @@ export default function PostDesigner() {
     const [isExporting, setIsExporting] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
     const [activeTab, setActiveTab] = useState('visuals'); // 'visuals', 'branding', 'narrative', 'adjustments'
-    const [showMobileSettings, setShowMobileSettings] = useState(false);
+    const [vh, setVh] = useState('100vh');
 
     useEffect(() => {
         const handleResize = () => {
             setIsMobile(window.innerWidth < 1024);
+            // Stable viewport height for mobile
+            if (window.innerWidth < 1024) {
+                setVh(`${window.innerHeight}px`);
+            } else {
+                setVh('100vh');
+            }
         };
         handleResize();
         window.addEventListener('resize', handleResize);
@@ -331,7 +339,7 @@ export default function PostDesigner() {
     };
 
     return (
-        <div className="designer-wrapper" style={{ height: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--bg-main)' }}>
+        <div className="designer-wrapper" style={{ height: vh, display: 'flex', flexDirection: 'column', backgroundColor: 'var(--bg-main)', overflow: 'hidden' }}>
             {/* Top Header */}
             <header style={{
                 height: isMobile ? '56px' : '60px',
@@ -363,23 +371,6 @@ export default function PostDesigner() {
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    {isMobile && (
-                        <button
-                            onClick={() => setShowMobileSettings(!showMobileSettings)}
-                            style={{
-                                padding: '8px',
-                                backgroundColor: showMobileSettings ? 'var(--accent-red)' : 'rgba(255,255,255,0.05)',
-                                color: 'white',
-                                borderRadius: '8px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                border: 'none'
-                            }}
-                        >
-                            {showMobileSettings ? <X size={18} /> : <Settings size={18} />}
-                        </button>
-                    )}
                     <button
                         onClick={handleDownload}
                         disabled={isExporting}
@@ -406,23 +397,22 @@ export default function PostDesigner() {
                 flex: 1,
                 display: 'flex',
                 flexDirection: isMobile ? 'column' : 'row',
-                height: isMobile && showMobileSettings ? 'auto' : isMobile ? 'calc(100vh - 56px)' : 'calc(100vh - 60px)',
-                overflow: isMobile && showMobileSettings ? 'visible' : 'hidden',
+                height: isMobile ? 'calc(100% - 56px)' : 'calc(100vh - 60px)',
+                overflow: 'hidden',
                 position: 'relative'
             }}>
-                {/* Sidebar Controls - On top in mobile */}
+                {/* Sidebar Controls - Bottom on mobile */}
                 <aside style={{
                     width: isMobile ? '100%' : '340px',
-                    height: isMobile ? 'calc(100vh - 56px)' : 'auto',
+                    height: isMobile ? '350px' : 'auto',
                     backgroundColor: 'var(--bg-panel)',
                     borderRight: isMobile ? 'none' : '1px solid var(--border-subtle)',
-                    borderBottom: isMobile ? '1px solid var(--border-subtle)' : 'none',
-                    display: isMobile && !showMobileSettings ? 'none' : 'flex',
+                    borderTop: isMobile ? '1px solid var(--border-subtle)' : 'none',
+                    display: 'flex',
                     flexDirection: 'column',
                     zIndex: 50,
                     overflowY: 'auto',
-                    order: isMobile ? 2 : 1,
-                    transition: 'all 0.3s ease-in-out'
+                    order: isMobile ? 2 : 1
                 }}>
                     {/* Mobile Tab Navigation */}
                     {isMobile && (
@@ -707,11 +697,16 @@ export default function PostDesigner() {
 
                                 {/* Text Size */}
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                        <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Font Size</label>
-                                        <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{fontSize}px</span>
-                                    </div>
                                     <input type="range" min="40" max="180" value={fontSize} onChange={e => setFontSize(parseInt(e.target.value))} />
+                                </div>
+
+                                {/* Subtitle Font Size */}
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                        <label style={{ fontSize: '9px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Subtitle Size</label>
+                                        <span style={{ fontSize: '10px', fontFamily: 'monospace', color: 'var(--text-secondary)' }}>{subtitleFontSize}px</span>
+                                    </div>
+                                    <input type="range" min="20" max="120" value={subtitleFontSize} onChange={e => setSubtitleFontSize(parseInt(e.target.value))} />
                                 </div>
 
                                 {/* Font Weight */}
@@ -804,19 +799,19 @@ export default function PostDesigner() {
                     </div>
                 </aside>
 
-                {/* Live Preview Area - On top in mobile (order changed) */}
+                {/* Live Preview Area - On top in mobile */}
                 <main ref={containerRef} style={{
-                    flex: 1,
+                    flex: isMobile ? 'none' : 1,
+                    height: isMobile ? '400px' : 'auto',
                     position: 'relative',
                     zIndex: 40,
-                    display: isMobile && showMobileSettings ? 'none' : 'grid',
+                    display: 'grid',
                     placeItems: 'center',
                     padding: isMobile ? '16px' : '40px',
                     backgroundColor: 'var(--bg-main)',
                     overflow: 'hidden',
                     order: isMobile ? 1 : 2,
-                    minHeight: isMobile ? 'calc(100vh - 56px)' : 'auto',
-                    borderBottom: 'none'
+                    borderBottom: isMobile ? '1px solid var(--border-subtle)' : 'none'
                 }}>
                     {/* Subtle Grid */}
                     <div style={{
@@ -858,6 +853,7 @@ export default function PostDesigner() {
                                 fontWeight={fontWeight}
                                 letterSpacing={letterSpacing}
                                 subtitle={subtitle}
+                                subtitleFontSize={subtitleFontSize}
                             />
                         </div>
                     </div>
@@ -900,6 +896,7 @@ export default function PostDesigner() {
                         fontWeight={fontWeight}
                         letterSpacing={letterSpacing}
                         subtitle={subtitle}
+                        subtitleFontSize={subtitleFontSize}
                     />
                 </div>
             </div>
