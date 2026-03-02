@@ -42,6 +42,8 @@ const PostContent = ({
     letterSpacing,
     subtitle,
     subtitleFontSize,
+    quoteAuthor,
+    quoteTitle,
     layoutMode
 }: any) => {
     const renderText = () => {
@@ -398,7 +400,7 @@ const PostContent = ({
                         left: 0,
                         width: '100%',
                         bottom: 0,
-                        backgroundColor: '#cc0000',
+                        backgroundColor: 'var(--accent-red)',
                         zIndex: 5,
                         display: 'flex',
                         flexDirection: 'column',
@@ -441,7 +443,7 @@ const PostContent = ({
                                     color: 'white',
                                     fontSize: `${fontSize}px`,
                                     lineHeight: lineHeight,
-                                    textAlign: 'center',
+                                    textAlign: 'right',
                                     fontWeight: fontWeight,
                                     letterSpacing: '0',
                                     width: '100%',
@@ -458,27 +460,48 @@ const PostContent = ({
                             </div>
                         </div>
 
-                        {/* Subtitle at Bottom */}
-                        {subtitle && (
-                            <div
-                                dir="rtl"
-                                className="lateef-bold"
-                                style={{
-                                    color: 'rgba(255,255,255,0.95)',
-                                    fontSize: `${subtitleFontSize}px`,
-                                    lineHeight: 1.2,
-                                    textAlign: 'left',
-                                    fontWeight: 500,
-                                    letterSpacing: '0',
-                                    width: '100%',
-                                    marginTop: 'auto',
-                                    display: 'flex',
-                                    justifyContent: 'flex-start',
-                                    textRendering: 'optimizeLegibility',
-                                    WebkitFontSmoothing: 'antialiased'
-                                }}
-                            >
-                                {subtitle}
+                        {/* Author and Title at Bottom */}
+                        {(quoteAuthor || quoteTitle) && (
+                            <div style={{
+                                width: '100%',
+                                marginTop: 'auto',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'flex-start',
+                                paddingTop: '20px'
+                            }}>
+                                {quoteAuthor && (
+                                    <div
+                                        dir="rtl"
+                                        className="lateef-bold"
+                                        style={{
+                                            color: 'white',
+                                            fontSize: `${Math.max(20, subtitleFontSize * 0.8)}px`,
+                                            fontWeight: 800,
+                                            textAlign: 'right',
+                                            width: '100%',
+                                            lineHeight: 1.2
+                                        }}
+                                    >
+                                        {quoteAuthor}
+                                    </div>
+                                )}
+                                {quoteTitle && (
+                                    <div
+                                        dir="rtl"
+                                        className="lateef-bold"
+                                        style={{
+                                            color: 'rgba(255,255,255,0.85)',
+                                            fontSize: `${Math.max(16, subtitleFontSize * 0.6)}px`,
+                                            fontWeight: 500,
+                                            textAlign: 'right',
+                                            width: '100%',
+                                            lineHeight: 1.2
+                                        }}
+                                    >
+                                        {quoteTitle}
+                                    </div>
+                                )}
                             </div>
                         )}
                     </div>
@@ -645,6 +668,9 @@ export default function PostDesigner() {
     const [isExporting, setIsExporting] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
     const [activeTab, setActiveTab] = useState('visuals'); // 'visuals', 'branding', 'narrative', 'adjustments'
+
+    const [quoteAuthor, setQuoteAuthor] = useState("");
+    const [quoteTitle, setQuoteTitle] = useState("");
 
     useEffect(() => {
         const handleResize = () => {
@@ -1018,41 +1044,86 @@ export default function PostDesigner() {
                                 />
                             </div>
 
-                            <div style={{ position: 'relative' }}>
-                                <textarea
-                                    value={subtitle}
-                                    onChange={e => setSubtitle(e.target.value.slice(0, 150))}
-                                    dir="rtl"
-                                    placeholder="ذيلي عنوان (Subtitle)..."
-                                    className="lateef-bold"
-                                    maxLength={150}
-                                    style={{
-                                        width: '100%',
-                                        height: '80px',
-                                        backgroundColor: 'var(--bg-card)',
-                                        border: '1px solid var(--border-subtle)',
-                                        borderRadius: '16px',
-                                        padding: '12px',
-                                        color: 'rgba(255,255,255,0.8)',
-                                        fontSize: '16px',
-                                        resize: 'none',
-                                        outline: 'none'
-                                    }}
-                                />
-                                <div style={{
-                                    position: 'absolute',
-                                    bottom: '8px',
-                                    left: '12px',
-                                    fontSize: '9px',
-                                    fontWeight: 700,
-                                    color: 'var(--text-muted)',
-                                    backgroundColor: 'rgba(0,0,0,0.2)',
-                                    padding: '1px 6px',
-                                    borderRadius: '4px'
-                                }}>
-                                    {subtitle.length}/150
+                            {layoutMode === 'quote' ? (
+                                <>
+                                    <div style={{ position: 'relative' }}>
+                                        <input
+                                            type="text"
+                                            value={quoteAuthor}
+                                            onChange={e => setQuoteAuthor(e.target.value)}
+                                            dir="rtl"
+                                            placeholder="ليکڪ جو نالو (Author Name)"
+                                            className="lateef-bold"
+                                            style={{
+                                                width: '100%',
+                                                backgroundColor: 'var(--bg-card)',
+                                                border: '1px solid var(--border-subtle)',
+                                                borderRadius: '12px',
+                                                padding: '10px 12px',
+                                                color: 'var(--text-primary)',
+                                                fontSize: '16px',
+                                                outline: 'none'
+                                            }}
+                                        />
+                                    </div>
+                                    <div style={{ position: 'relative' }}>
+                                        <input
+                                            type="text"
+                                            value={quoteTitle}
+                                            onChange={e => setQuoteTitle(e.target.value)}
+                                            dir="rtl"
+                                            placeholder="ليکڪ جو عهدو (Author Title)"
+                                            className="lateef-bold"
+                                            style={{
+                                                width: '100%',
+                                                backgroundColor: 'var(--bg-card)',
+                                                border: '1px solid var(--border-subtle)',
+                                                borderRadius: '12px',
+                                                padding: '10px 12px',
+                                                color: 'var(--text-secondary)',
+                                                fontSize: '16px',
+                                                outline: 'none'
+                                            }}
+                                        />
+                                    </div>
+                                </>
+                            ) : (
+                                <div style={{ position: 'relative' }}>
+                                    <textarea
+                                        value={subtitle}
+                                        onChange={e => setSubtitle(e.target.value.slice(0, 150))}
+                                        dir="rtl"
+                                        placeholder="ذيلي عنوان (Subtitle)..."
+                                        className="lateef-bold"
+                                        maxLength={150}
+                                        style={{
+                                            width: '100%',
+                                            height: '80px',
+                                            backgroundColor: 'var(--bg-card)',
+                                            border: '1px solid var(--border-subtle)',
+                                            borderRadius: '16px',
+                                            padding: '12px',
+                                            color: 'rgba(255,255,255,0.8)',
+                                            fontSize: '16px',
+                                            resize: 'none',
+                                            outline: 'none'
+                                        }}
+                                    />
+                                    <div style={{
+                                        position: 'absolute',
+                                        bottom: '8px',
+                                        left: '12px',
+                                        fontSize: '9px',
+                                        fontWeight: 700,
+                                        color: 'var(--text-muted)',
+                                        backgroundColor: 'rgba(0,0,0,0.2)',
+                                        padding: '1px 6px',
+                                        borderRadius: '4px'
+                                    }}>
+                                        {subtitle.length}/150
+                                    </div>
                                 </div>
-                            </div>
+                            )}
                         </section>
                         {/* Adjustments Section */}
                         <section className="settings-section section-adjustments" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -1210,6 +1281,8 @@ export default function PostDesigner() {
                                 letterSpacing={letterSpacing}
                                 subtitle={subtitle}
                                 subtitleFontSize={subtitleFontSize}
+                                quoteAuthor={quoteAuthor}
+                                quoteTitle={quoteTitle}
                                 layoutMode={layoutMode}
                             />
                         </div>
@@ -1255,6 +1328,8 @@ export default function PostDesigner() {
                         letterSpacing={letterSpacing}
                         subtitle={subtitle}
                         subtitleFontSize={subtitleFontSize}
+                        quoteAuthor={quoteAuthor}
+                        quoteTitle={quoteTitle}
                         layoutMode={layoutMode}
                     />
                 </div>
