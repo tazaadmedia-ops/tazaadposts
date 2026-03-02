@@ -147,13 +147,17 @@ const PostContent = ({
                         flexDirection: 'column',
                         padding: '60px 80px',
                         alignItems: textAlign === 'left' ? 'flex-start' : textAlign === 'right' ? 'flex-end' : 'center',
-                        justifyContent: textY < 30 ? 'flex-start' : textY > 70 ? 'flex-end' : 'center'
+                        justifyContent: textY < 30 ? 'flex-start' : textY > 70 ? 'flex-end' : 'center',
+                        paddingTop: textY < 30 ? '40px' : 'auto',
+                        paddingBottom: textY > 70 ? '40px' : 'auto'
                     }}>
                         <div style={{
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: textAlign === 'left' ? 'flex-start' : textAlign === 'right' ? 'flex-end' : 'center',
-                            width: '100%'
+                            width: '100%',
+                            marginTop: textY === 50 ? '0' : textY < 50 ? '0' : 'auto',
+                            marginBottom: textY === 50 ? '0' : textY > 50 ? '0' : 'auto'
                         }}>
                             {showBreakingNews && (
                                 <div
@@ -250,7 +254,6 @@ const PostContent = ({
                         />
                     </div>
 
-                    {/* Narrative Layer */}
                     <div
                         style={{
                             position: 'absolute',
@@ -260,14 +263,18 @@ const PostContent = ({
                             flexDirection: 'column',
                             padding: '80px',
                             alignItems: textAlign === 'left' ? 'flex-start' : textAlign === 'right' ? 'flex-end' : 'center',
-                            justifyContent: 'center', // Vertically centered
+                            justifyContent: textY < 30 ? 'flex-start' : textY > 70 ? 'flex-end' : 'center',
+                            paddingTop: textY < 30 ? '80px' : 'auto',
+                            paddingBottom: textY > 70 ? '80px' : 'auto'
                         }}
                     >
                         <div style={{
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: textAlign === 'left' ? 'flex-start' : textAlign === 'right' ? 'flex-end' : 'center',
-                            width: '100%'
+                            width: '100%',
+                            marginTop: textY === 50 ? '0' : textY < 50 ? '0' : 'auto',
+                            marginBottom: textY === 50 ? '0' : textY > 50 ? '0' : 'auto'
                         }}>
                             {showBreakingNews && (
                                 <div
@@ -396,6 +403,9 @@ const PostContent = ({
                         display: 'flex',
                         flexDirection: 'column',
                         padding: '60px 80px',
+                        justifyContent: textY < 30 ? 'flex-start' : textY > 70 ? 'flex-end' : 'center',
+                        paddingTop: textY < 30 ? '40px' : 'auto',
+                        paddingBottom: textY > 70 ? '40px' : 'auto'
                     }}>
                         {/* Quote Mark Icon */}
                         <div style={{
@@ -420,7 +430,9 @@ const PostContent = ({
                             alignItems: 'center',
                             justifyContent: 'center',
                             width: '100%',
-                            zIndex: 10
+                            zIndex: 10,
+                            marginTop: textY === 50 ? '0' : textY < 50 ? '0' : 'auto',
+                            marginBottom: textY === 50 ? '0' : textY > 50 ? '0' : 'auto'
                         }}>
                             <div
                                 dir="rtl"
@@ -591,17 +603,19 @@ const PostContent = ({
             )}
 
             {/* Bottom Identity Bar */}
-            <div
-                style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    backgroundColor: (layoutMode === 'split' || layoutMode === 'quote' || layoutMode === 'solid') ? 'transparent' : 'var(--accent-red)',
-                    zIndex: 30,
-                    height: (layoutMode === 'split' || layoutMode === 'quote' || layoutMode === 'solid') ? 0 : `${bottomBarHeight}px`
-                }}
-            />
+            {layoutMode === 'overlay' && (
+                <div
+                    style={{
+                        position: 'absolute',
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        backgroundColor: 'var(--accent-red)',
+                        zIndex: 30,
+                        height: `${bottomBarHeight}px`
+                    }}
+                />
+            )}
         </div>
     );
 };
