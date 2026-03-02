@@ -74,7 +74,9 @@ const PostContent = ({
                 position: 'relative',
                 display: 'flex',
                 flexDirection: 'column',
-                overflow: 'hidden'
+                overflow: 'hidden',
+                WebkitTextSizeAdjust: 'none',
+                textSizeAdjust: 'none' as any
             }}
         >
             {/* Background Image */}
