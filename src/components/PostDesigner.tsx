@@ -254,7 +254,7 @@ export default function PostDesigner() {
         const handleResize = () => {
             if (!containerRef.current) return;
             const { clientWidth, clientHeight } = containerRef.current;
-            const padding = 120;
+            const padding = isMobile ? 40 : 120;
             const availableW = clientWidth - padding;
             const availableH = clientHeight - padding;
             const scaleX = availableW / POST_WIDTH;
@@ -314,31 +314,31 @@ export default function PostDesigner() {
         <div className="designer-wrapper" style={{ height: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--bg-main)' }}>
             {/* Top Header */}
             <header style={{
-                height: '60px',
+                height: isMobile ? '56px' : '60px',
                 borderBottom: '1px solid var(--border-subtle)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                padding: '0 24px',
+                padding: isMobile ? '0 12px' : '0 24px',
                 backgroundColor: 'var(--bg-panel)',
                 zIndex: 100
             }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '8px' : '12px' }}>
                     <div style={{
-                        width: '32px',
-                        height: '32px',
+                        width: isMobile ? '28px' : '32px',
+                        height: isMobile ? '28px' : '32px',
                         backgroundColor: 'var(--accent-red)',
-                        borderRadius: '8px',
+                        borderRadius: '6px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         color: 'white',
                         fontWeight: 900,
-                        fontSize: '18px'
+                        fontSize: isMobile ? '16px' : '18px'
                     }}>T</div>
                     <div>
-                        <h1 style={{ fontSize: '14px', fontWeight: 800, color: 'white', letterSpacing: '-0.01em' }}>Tazaad Post</h1>
-                        <p style={{ fontSize: '10px', color: 'var(--text-secondary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Designer v2.0</p>
+                        <h1 style={{ fontSize: isMobile ? '12px' : '14px', fontWeight: 800, color: 'white', letterSpacing: '-0.01em' }}>Tazaad Post</h1>
+                        {!isMobile && <p style={{ fontSize: '10px', color: 'var(--text-secondary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Designer v2.0</p>}
                     </div>
                 </div>
 
@@ -381,7 +381,7 @@ export default function PostDesigner() {
                     overflowY: isMobile ? 'visible' : 'auto',
                     order: isMobile ? 1 : 0
                 }}>
-                    <div style={{ flex: 1, overflowY: isMobile ? 'visible' : 'auto', padding: '24px', display: 'flex', flexDirection: 'column', gap: '32px' }}>
+                    <div style={{ flex: 1, overflowY: isMobile ? 'visible' : 'auto', padding: isMobile ? '16px' : '24px', display: 'flex', flexDirection: 'column', gap: '32px' }}>
 
                         {/* Visuals Section */}
                         <section style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -670,17 +670,17 @@ export default function PostDesigner() {
                     </div>
                 </aside>
 
-                {/* Live Preview Area */}
+                {/* Live Preview Area - Below inputs on mobile */}
                 <main ref={containerRef} style={{
                     flex: 1,
                     position: 'relative',
                     display: 'grid',
                     placeItems: 'center',
-                    padding: isMobile ? '24px' : '40px',
+                    padding: isMobile ? '12px' : '40px',
                     backgroundColor: 'var(--bg-main)',
                     overflow: 'hidden',
                     order: isMobile ? 2 : 0,
-                    minHeight: isMobile ? '600px' : 'auto'
+                    minHeight: isMobile ? '480px' : 'auto'
                 }}>
                     {/* Subtle Grid */}
                     <div style={{
