@@ -44,8 +44,10 @@ body {
     color: var(--text-primary);
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    overflow: hidden;
+    -moz-osx-osx-font-smoothing: grayscale;
+    /* Allow scrolling on mobile devices */
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 /* Custom Scrollbar */

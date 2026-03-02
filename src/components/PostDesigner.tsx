@@ -397,7 +397,8 @@ export default function PostDesigner() {
                     zIndex: 50,
                     overflowY: isMobile ? 'visible' : 'auto',
                     order: isMobile ? 2 : 1,
-                    minHeight: isMobile ? '400px' : 'auto'
+                    minHeight: isMobile ? '300px' : 'auto',
+                    paddingBottom: isMobile ? '80px' : '0' // Extra room for mobile
                 }}>
                     {/* Mobile Tab Navigation */}
                     {isMobile && (
