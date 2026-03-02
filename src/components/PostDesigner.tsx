@@ -259,13 +259,11 @@ export default function PostDesigner() {
     useEffect(() => {
         const handleResize = () => {
             setIsMobile(window.innerWidth < 1024);
-            const handleResize = () => {
-                setIsMobile(window.innerWidth < 1024);
-            };
-            handleResize();
-            window.addEventListener('resize', handleResize);
-            return () => window.removeEventListener('resize', handleResize);
-        }, []);
+        };
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     // --- Refs ---
     const fileInputRef = useRef<HTMLInputElement>(null);
