@@ -1196,6 +1196,7 @@ export default function PostDesigner() {
                                 letterSpacing={letterSpacing}
                                 subtitle={subtitle}
                                 subtitleFontSize={subtitleFontSize}
+                                layoutMode={layoutMode}
                             />
                         </div>
                     </div>
@@ -1240,6 +1241,7 @@ export default function PostDesigner() {
                         letterSpacing={letterSpacing}
                         subtitle={subtitle}
                         subtitleFontSize={subtitleFontSize}
+                        layoutMode={layoutMode}
                     />
                 </div>
             </div >
