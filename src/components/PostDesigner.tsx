@@ -664,7 +664,7 @@ export default function PostDesigner() {
 
     useEffect(() => {
         const handleResize = () => {
-            setIsMobile(window.innerWidth < 1024);
+            setIsMobile(window.innerWidth <= 1024);
         };
         handleResize();
         window.addEventListener('resize', handleResize);
@@ -681,7 +681,7 @@ export default function PostDesigner() {
         const handleResize = () => {
             if (!containerRef.current) return;
             const { clientWidth, clientHeight } = containerRef.current;
-            const padding = isMobile ? 40 : 120;
+            const padding = isMobile ? 24 : 80;
             const availableW = clientWidth - padding;
             const availableH = clientHeight - padding;
             const scaleX = availableW / POST_WIDTH;
@@ -793,12 +793,10 @@ export default function PostDesigner() {
                 </div>
             </header>
 
-            <div style={{
+            <div className="designer-body" style={{
                 flex: 1,
                 minHeight: 0,
                 display: 'flex',
-                flexDirection: isMobile ? 'column' : 'row',
-                height: isMobile ? 'calc(100% - 56px)' : 'calc(100vh - 60px)',
                 overflow: 'hidden',
                 position: 'relative'
             }}>

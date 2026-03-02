@@ -210,7 +210,7 @@ input[type="range"] {
     }
 
     .designer-body {
-        flex-direction: column !important;
+        flex-direction: column-reverse !important;
         height: calc(100% - 56px) !important;
     }
 
@@ -221,13 +221,11 @@ input[type="range"] {
         border-right: none !important;
         border-top: 1px solid var(--border-subtle) !important;
         overflow-y: hidden !important;
-        order: 2 !important;
     }
 
     .designer-main {
         flex: 1 1 auto !important;
         padding: 12px !important;
-        order: 1 !important;
         border-bottom: 1px solid var(--border-subtle) !important;
     }
 
