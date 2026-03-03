@@ -142,7 +142,7 @@ const PostContent = ({
                         top: 'calc(60% + 14px)',
                         left: 0,
                         width: '100%',
-                        bottom: bottomBarHeight,
+                        bottom: 0,
                         backgroundColor: '#000000',
                         zIndex: 5,
                         display: 'flex',
