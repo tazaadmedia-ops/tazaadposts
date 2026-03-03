@@ -174,9 +174,10 @@ const PostContent = ({
                                         lineHeight: 1,
                                         textRendering: 'optimizeLegibility',
                                         WebkitFontSmoothing: 'antialiased',
+                                        unicodeBidi: 'bidi-override',
                                         fontFeatureSettings: '"kern" 1, "liga" 1, "clig" 1, "calt" 1',
                                         fontVariantLigatures: 'contextual',
-                                        letterSpacing: '0',
+                                        letterSpacing: 'normal',
                                         whiteSpace: 'nowrap'
                                     }}
                                 >
@@ -192,10 +193,11 @@ const PostContent = ({
                                     lineHeight: lineHeight,
                                     textAlign: textAlign,
                                     fontWeight: fontWeight,
-                                    letterSpacing: '0',
+                                    letterSpacing: 'normal',
                                     width: '100%',
                                     textRendering: 'optimizeLegibility',
                                     WebkitFontSmoothing: 'antialiased',
+                                        unicodeBidi: 'bidi-override',
                                     wordSpacing: 'normal',
                                     whiteSpace: 'pre-wrap',
                                     wordBreak: 'break-word',
@@ -215,11 +217,12 @@ const PostContent = ({
                                         lineHeight: 1.2,
                                         textAlign: textAlign,
                                         fontWeight: 500,
-                                        letterSpacing: '0',
+                                        letterSpacing: 'normal',
                                         width: '100%',
                                         marginTop: '10px',
                                         textRendering: 'optimizeLegibility',
-                                        WebkitFontSmoothing: 'antialiased'
+                                        WebkitFontSmoothing: 'antialiased',
+                                        unicodeBidi: 'bidi-override'
                                     }}
                                 >
                                     {subtitle}
@@ -288,9 +291,10 @@ const PostContent = ({
                                         lineHeight: 1,
                                         textRendering: 'optimizeLegibility',
                                         WebkitFontSmoothing: 'antialiased',
+                                        unicodeBidi: 'bidi-override',
                                         fontFeatureSettings: '"kern" 1, "liga" 1, "clig" 1, "calt" 1',
                                         fontVariantLigatures: 'contextual',
-                                        letterSpacing: '0',
+                                        letterSpacing: 'normal',
                                         whiteSpace: 'nowrap'
                                     }}
                                 >
@@ -306,10 +310,11 @@ const PostContent = ({
                                     lineHeight: lineHeight,
                                     textAlign: textAlign,
                                     fontWeight: fontWeight,
-                                    letterSpacing: '0',
+                                    letterSpacing: 'normal',
                                     width: '100%',
                                     textRendering: 'optimizeLegibility',
                                     WebkitFontSmoothing: 'antialiased',
+                                        unicodeBidi: 'bidi-override',
                                     wordSpacing: 'normal',
                                     whiteSpace: 'pre-wrap',
                                     wordBreak: 'break-word',
@@ -329,11 +334,12 @@ const PostContent = ({
                                         lineHeight: 1.2,
                                         textAlign: textAlign,
                                         fontWeight: 500,
-                                        letterSpacing: '0',
+                                        letterSpacing: 'normal',
                                         width: '100%',
                                         marginTop: '10px',
                                         textRendering: 'optimizeLegibility',
-                                        WebkitFontSmoothing: 'antialiased'
+                                        WebkitFontSmoothing: 'antialiased',
+                                        unicodeBidi: 'bidi-override'
                                     }}
                                 >
                                     {subtitle}
@@ -435,10 +441,11 @@ const PostContent = ({
                                     lineHeight: lineHeight,
                                     textAlign: 'right',
                                     fontWeight: fontWeight,
-                                    letterSpacing: '0',
+                                    letterSpacing: 'normal',
                                     width: '100%',
                                     textRendering: 'optimizeLegibility',
                                     WebkitFontSmoothing: 'antialiased',
+                                        unicodeBidi: 'bidi-override',
                                     wordSpacing: 'normal',
                                     whiteSpace: 'pre-wrap',
                                     wordBreak: 'break-word',
@@ -581,9 +588,10 @@ const PostContent = ({
                                         lineHeight: 1,
                                         textRendering: 'optimizeLegibility',
                                         WebkitFontSmoothing: 'antialiased',
+                                        unicodeBidi: 'bidi-override',
                                         fontFeatureSettings: '"kern" 1, "liga" 1, "clig" 1, "calt" 1',
                                         fontVariantLigatures: 'contextual',
-                                        letterSpacing: '0',
+                                        letterSpacing: 'normal',
                                         wordSpacing: 'normal',
                                         whiteSpace: 'nowrap'
                                     }}
@@ -600,10 +608,11 @@ const PostContent = ({
                                     lineHeight: lineHeight,
                                     textAlign: textAlign,
                                     fontWeight: fontWeight,
-                                    letterSpacing: '0',
+                                    letterSpacing: 'normal',
                                     width: '100%',
                                     textRendering: 'optimizeLegibility',
                                     WebkitFontSmoothing: 'antialiased',
+                                        unicodeBidi: 'bidi-override',
                                     fontFeatureSettings: '"kern" 1, "liga" 1, "clig" 1, "calt" 1',
                                     fontVariantLigatures: 'contextual',
                                     wordSpacing: 'normal',
@@ -623,11 +632,12 @@ const PostContent = ({
                                         lineHeight: 1.2,
                                         textAlign: textAlign,
                                         fontWeight: 500,
-                                        letterSpacing: '0',
+                                        letterSpacing: 'normal',
                                         width: '100%',
                                         marginTop: '10px',
                                         textRendering: 'optimizeLegibility',
                                         WebkitFontSmoothing: 'antialiased',
+                                        unicodeBidi: 'bidi-override',
                                         opacity: 0.9
                                     }}
                                 >
