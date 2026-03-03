@@ -14,7 +14,8 @@ import {
     Maximize2,
     Settings,
     X,
-    ChevronLeft
+    ChevronLeft,
+    RefreshCw
 } from 'lucide-react';
 
 const POST_WIDTH = 1080;
@@ -197,7 +198,7 @@ const PostContent = ({
                                     width: '100%',
                                     textRendering: 'optimizeLegibility',
                                     WebkitFontSmoothing: 'antialiased',
-                                        unicodeBidi: 'bidi-override',
+                                    unicodeBidi: 'bidi-override',
                                     wordSpacing: 'normal',
                                     whiteSpace: 'pre-wrap',
                                     wordBreak: 'break-word',
@@ -314,7 +315,7 @@ const PostContent = ({
                                     width: '100%',
                                     textRendering: 'optimizeLegibility',
                                     WebkitFontSmoothing: 'antialiased',
-                                        unicodeBidi: 'bidi-override',
+                                    unicodeBidi: 'bidi-override',
                                     wordSpacing: 'normal',
                                     whiteSpace: 'pre-wrap',
                                     wordBreak: 'break-word',
@@ -445,7 +446,7 @@ const PostContent = ({
                                     width: '100%',
                                     textRendering: 'optimizeLegibility',
                                     WebkitFontSmoothing: 'antialiased',
-                                        unicodeBidi: 'bidi-override',
+                                    unicodeBidi: 'bidi-override',
                                     wordSpacing: 'normal',
                                     whiteSpace: 'pre-wrap',
                                     wordBreak: 'break-word',
@@ -612,7 +613,7 @@ const PostContent = ({
                                     width: '100%',
                                     textRendering: 'optimizeLegibility',
                                     WebkitFontSmoothing: 'antialiased',
-                                        unicodeBidi: 'bidi-override',
+                                    unicodeBidi: 'bidi-override',
                                     fontFeatureSettings: '"kern" 1, "liga" 1, "clig" 1, "calt" 1',
                                     fontVariantLigatures: 'contextual',
                                     wordSpacing: 'normal',
@@ -695,6 +696,37 @@ export default function PostDesigner() {
 
     const [quoteAuthor, setQuoteAuthor] = useState("");
     const [quoteTitle, setQuoteTitle] = useState("");
+
+    const handleRefresh = async () => {
+        try {
+            // 1. Unregister all service workers
+            if ('serviceWorker' in navigator) {
+                const registrations = await navigator.serviceWorker.getRegistrations();
+                for (const registration of registrations) {
+                    await registration.unregister();
+                }
+            }
+
+            // 2. Clear all browser caches
+            if ('caches' in window) {
+                const cacheNames = await caches.keys();
+                for (const cacheName of cacheNames) {
+                    await caches.delete(cacheName);
+                }
+            }
+
+            // 3. Clear storage
+            localStorage.clear();
+            sessionStorage.clear();
+
+            // 4. Force reload (bypass cache)
+            window.location.reload();
+        } catch (error) {
+            console.error('Failed to clear cache:', error);
+            // Fallback reload
+            window.location.reload();
+        }
+    };
 
     useEffect(() => {
         const handleResize = () => {
@@ -805,6 +837,27 @@ export default function PostDesigner() {
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <button
+                        onClick={handleRefresh}
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                            background: 'rgba(255,255,255,0.05)',
+                            border: '1px solid rgba(255,255,255,0.1)',
+                            padding: isMobile ? '8px' : '8px 14px',
+                            borderRadius: '10px',
+                            color: 'white',
+                            fontSize: '12px',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                            transition: 'all 0.2s ease'
+                        }}
+                        title="Clear cache and refresh"
+                    >
+                        <RefreshCw size={14} className={isExporting ? 'animate-spin' : ''} />
+                        {!isMobile && "Refresh App"}
+                    </button>
                     <button
                         onClick={handleDownload}
                         disabled={isExporting}
