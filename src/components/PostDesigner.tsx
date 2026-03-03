@@ -514,6 +514,30 @@ const PostContent = ({
                         />
                     )}
 
+                    {/* Brand Identity Layer */}
+                    <div style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        padding: '55px',
+                        zIndex: 20,
+                        display: 'flex',
+                        justifyContent: 'flex-start'
+                    }}>
+                        <img
+                            src={logoUrl}
+                            alt="Tazaad"
+                            style={{
+                                height: `${logoSize}px`,
+                                width: 'auto',
+                                objectFit: 'contain',
+                                display: 'block'
+                            }}
+                            crossOrigin="anonymous"
+                        />
+                    </div>
+
                     {/* Narrative Layer */}
                     <div
                         style={{
