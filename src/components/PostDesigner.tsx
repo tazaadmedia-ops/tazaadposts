@@ -707,7 +707,7 @@ export default function PostDesigner() {
                 }
             }
 
-            // 2. Clear all browser caches
+            // 2. Clear all browser caches (Cache Storage API)
             if ('caches' in window) {
                 const cacheNames = await caches.keys();
                 for (const cacheName of cacheNames) {
@@ -715,15 +715,18 @@ export default function PostDesigner() {
                 }
             }
 
-            // 3. Clear storage
+            // 3. Clear Web Storage
             localStorage.clear();
             sessionStorage.clear();
 
-            // 4. Force reload (bypass cache)
-            window.location.reload();
+            // 4. Force hard reload from server using cache-busting timestamp
+            // This is more reliable than location.reload(true) on many mobile browsers
+            const url = new URL(window.location.origin + window.location.pathname);
+            url.searchParams.set('t', Date.now().toString());
+            window.location.href = url.toString();
         } catch (error) {
             console.error('Failed to clear cache:', error);
-            // Fallback reload
+            // Fallback: simple reload if something fails
             window.location.reload();
         }
     };
