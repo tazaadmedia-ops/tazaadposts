@@ -6,11 +6,11 @@ import './index.css'
 // Global Cache & Version Control Logic
 const checkVersion = async () => {
     try {
-        // Fetch version.json with no-cache to get the latest from server
-        const response = await fetch('/version.json?t=' + Date.now(), {
+        // Fetch version.json with aggressive no-cache to get the latest from server
+        const response = await fetch('/version.json?v=' + Date.now(), {
             cache: 'no-store',
             headers: {
-                'Cache-Control': 'no-cache',
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
                 'Pragma': 'no-cache'
             }
         });
@@ -22,7 +22,7 @@ const checkVersion = async () => {
 
         // If we have a stored version and it doesn't match the server version
         if (currentVersion && currentVersion !== data.version) {
-            console.log(`[Cache Control] New version detected: ${data.version}. Clearing cache...`);
+            console.log(`[Cache Control] New version detected: ${data.version}. Performing hard reset...`);
 
             // 1. Unregister all service workers
             if ('serviceWorker' in navigator) {
@@ -32,7 +32,7 @@ const checkVersion = async () => {
                 }
             }
 
-            // 2. Clear all browser caches
+            // 2. Clear all browser caches (Cache Storage API)
             if ('caches' in window) {
                 const names = await caches.keys();
                 for (const name of names) {
@@ -40,13 +40,15 @@ const checkVersion = async () => {
                 }
             }
 
-            // 3. Clear local storage but preserve the new version key to prevent infinite loop
+            // 3. Clear storage but preserve the new version key to prevent infinite loop
             localStorage.clear();
             sessionStorage.clear();
             localStorage.setItem('app-version', data.version);
 
-            // 4. Force hard reload from server
-            window.location.reload();
+            // 4. Force aggressive hard reload from server
+            const url = new URL(window.location.origin + window.location.pathname);
+            url.searchParams.set('t', Date.now().toString());
+            window.location.href = url.toString();
         } else if (!currentVersion) {
             // First time visit, just set the version
             localStorage.setItem('app-version', data.version);
