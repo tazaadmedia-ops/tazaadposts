@@ -771,33 +771,48 @@ export default function PostDesigner() {
         if (!masterArtboardRef.current) return;
         setIsExporting(true);
         try {
+            // 1. Wait for fonts and brief pause for rendering stability
             await new Promise(resolve => setTimeout(resolve, 400));
             if (typeof document !== 'undefined' && 'fonts' in document) {
                 await (document as any).fonts.ready;
             }
+
+            // 2. Generate canvas with slightly lower scale (3x) for mobile compatibility (approx 3240x3750)
+            // Scale 4 (4320x5000) often hits memory/size limits on mobile browsers.
             const canvas = await html2canvas(masterArtboardRef.current, {
-                scale: 4,
+                scale: 3,
                 useCORS: true,
                 allowTaint: false,
                 backgroundColor: bgColor,
                 width: POST_WIDTH,
                 height: POST_HEIGHT,
-                scrollX: 0,
-                scrollY: 0,
-                windowWidth: POST_WIDTH,
-                windowHeight: POST_HEIGHT,
-                x: 0,
-                y: 0,
                 logging: false,
                 imageTimeout: 0,
             });
 
-            const link = document.createElement("a");
-            link.download = `tazaad-${Date.now()}.png`;
-            link.href = canvas.toDataURL("image/png");
-            link.click();
+            // 3. Use Blobs instead of DataURLs for better memory management and browser compatibility
+            canvas.toBlob((blob) => {
+                if (!blob) throw new Error("Canvas to Blob conversion failed");
+
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement("a");
+                link.download = `tazaad-${Date.now()}.png`;
+                link.href = url;
+
+                // 4. Force append to body to ensure trigger works on all browsers
+                document.body.appendChild(link);
+                link.click();
+
+                // 5. Cleanup
+                setTimeout(() => {
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                }, 100);
+            }, 'image/png', 1.0);
+
         } catch (err) {
             console.error("Export Error:", err);
+            alert("Download failed. Please try again or take a screenshot.");
         } finally {
             setIsExporting(false);
         }
