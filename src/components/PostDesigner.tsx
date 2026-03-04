@@ -889,45 +889,36 @@ export default function PostDesigner() {
             }}>
                 {/* Sidebar Controls - Bottom on mobile */}
                 <aside className="designer-sidebar" data-active-tab={activeTab}>
-                    {/* Mobile Tab Navigation */}
-                    {isMobile && (
-                        <div style={{
-                            display: 'flex',
-                            flexShrink: 0,
-                            overflowX: 'auto',
-                            borderBottom: '1px solid var(--border-subtle)',
-                            backgroundColor: 'rgba(255,255,255,0.02)',
-                            scrollbarWidth: 'none'
-                        }}>
-                            {[
-                                { id: 'visuals', icon: <ImageIcon size={14} />, label: 'Visuals' },
-                                { id: 'branding', icon: <Palette size={14} />, label: 'Branding' },
-                                { id: 'narrative', icon: <Type size={14} />, label: 'Text' },
-                                { id: 'adjustments', icon: <Maximize2 size={14} />, label: 'Layout' }
-                            ].map(tab => (
-                                <button
-                                    key={tab.id}
-                                    onClick={() => setActiveTab(tab.id)}
-                                    style={{
-                                        flex: 1,
-                                        padding: '14px 10px',
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignItems: 'center',
-                                        gap: '6px',
-                                        backgroundColor: activeTab === tab.id ? 'var(--accent-red)' : 'transparent',
-                                        color: activeTab === tab.id ? 'white' : 'var(--text-muted)',
-                                        border: 'none',
-                                        minWidth: '85px',
-                                        transition: 'all 0.2s'
-                                    }}
-                                >
-                                    {tab.icon}
-                                    <span style={{ fontSize: '9px', fontWeight: 800, textTransform: 'uppercase' }}>{tab.label}</span>
-                                </button>
-                            ))}
-                        </div>
-                    )}
+                    {/* Mobile Tab Navigation (Visibility controlled via CSS) */}
+                    <div className="mobile-tab-nav">
+                        {[
+                            { id: 'visuals', icon: <ImageIcon size={14} />, label: 'Visuals' },
+                            { id: 'branding', icon: <Palette size={14} />, label: 'Branding' },
+                            { id: 'narrative', icon: <Type size={14} />, label: 'Text' },
+                            { id: 'adjustments', icon: <Maximize2 size={14} />, label: 'Layout' }
+                        ].map(tab => (
+                            <button
+                                key={tab.id}
+                                onClick={() => setActiveTab(tab.id)}
+                                style={{
+                                    flex: 1,
+                                    padding: '14px 10px',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    gap: '6px',
+                                    backgroundColor: activeTab === tab.id ? 'var(--accent-red)' : 'transparent',
+                                    color: activeTab === tab.id ? 'white' : 'var(--text-muted)',
+                                    border: 'none',
+                                    minWidth: '85px',
+                                    transition: 'all 0.2s'
+                                }}
+                            >
+                                {tab.icon}
+                                <span style={{ fontSize: '9px', fontWeight: 800, textTransform: 'uppercase' }}>{tab.label}</span>
+                            </button>
+                        ))}
+                    </div>
 
                     <div className="sidebar-inner-content">
 
@@ -1287,31 +1278,6 @@ export default function PostDesigner() {
                         </section>
                     </div>
 
-                    {/* Export Button (Sticky Bottom) */}
-                    <div style={{ padding: '24px', borderTop: '1px solid var(--border-subtle)', flexShrink: 0 }}>
-                        <button
-                            onClick={handleDownload}
-                            disabled={isExporting || !text}
-                            style={{
-                                width: '100%',
-                                padding: '16px',
-                                backgroundColor: 'var(--accent-red)',
-                                color: 'white',
-                                borderRadius: '16px',
-                                fontSize: '14px',
-                                fontWeight: 900,
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.1em',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                gap: '12px',
-                                boxShadow: '0 12px 24px -8px rgba(220, 38, 38, 0.5)'
-                            }}
-                        >
-                            {isExporting ? 'Capturing...' : <><Download size={18} /> Export Post</>}
-                        </button>
-                    </div>
                 </aside>
 
                 {/* Live Preview Area */}
